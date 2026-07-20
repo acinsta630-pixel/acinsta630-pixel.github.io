@@ -28,7 +28,7 @@
                 <li><a href="#">پروژه‌ها</a></li>
                 <li><a href="#">تماس</a></li>
             </ul>
-            <!-- دکمه تغییر تم (مرحله ۸) -->
+            <!-- دکمه تغییر تم -->
             <button id="theme-toggle">🌙</button>
         </div>
     </nav>
@@ -145,14 +145,9 @@
         </div>
     </section>
 
-    <!-- فوتر -->
+    <!-- فوتر (بدون شبکه های اجتماعی) -->
     <footer>
         <p>تمامی حقوق برای امیر محفوظ است © 2026</p>
-        <div class="socials">
-            <a href="#">تلگرام</a>
-            <a href="#">اینستاگرام</a>
-            <a href="#">گیت‌هاب</a>
-        </div>
     </footer>
 
     <!-- کدهای جاوا اسکریپت -->
@@ -175,19 +170,17 @@
         }, { threshold: 0.2 });
         reveals.forEach(reveal => { observer.observe(reveal); });
 
-        // ۲. کدهای تغییر تم (مرحله ۸)
+        // ۲. کدهای تغییر تم
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
 
         themeToggle.addEventListener('click', () => {
-            // اضافه یا حذف کردن کلاس light-mode به body
             body.classList.toggle('light-mode');
 
-            // تغییر آیکون دکمه
             if (body.classList.contains('light-mode')) {
-                themeToggle.textContent = '☀️'; // خورشید برای حالت روشن
+                themeToggle.textContent = '☀️';
             } else {
-                themeToggle.textContent = '🌙'; // ماه برای حالت تاریک
+                themeToggle.textContent = '🌙';
             }
         });
     </script>
