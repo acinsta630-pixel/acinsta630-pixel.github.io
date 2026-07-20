@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>آب و هوا | سایت امیر</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- بخش بک‌گراند متحرک -->
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav>
+        <div class="logo">Amir</div>
+        <div class="nav-controls">
+            <ul class="menu">
+                <li><a href="index.html">خانه</a></li>
+                <li><a href="ai.html">هوش مصنوعی</a></li>
+                <li><a href="weather.html">آب و هوا</a></li>
+            </ul>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </nav>
+
+    <!-- صفحه آب و هوا -->
+    <section class="ai-page">
+        <h1 class="section-title">آب و هوای شهرها 🌤️</h1>
+        
+        <div class="weather-container">
+            <div class="weather-input-box">
+                <input type="text" id="city-input" placeholder="نام شهر رو بنویس (مثلاً Tehran یا Shiraz)...">
+                <button id="get-weather-btn">نمایش</button>
+            </div>
+            
+            <div id="weather-result" class="weather-result hidden">
+                <h2 id="city-name"></h2>
+                <div class="weather-temp" id="temp"></div>
+                <div class="weather-desc" id="desc"></div>
+                <div class="weather-extra">
+                    <span id="wind"></span>
+                    <span id="humidity"></span>
+                </div>
+            </div>
+
+            <div id="error-msg" class="error-msg hidden">شهر پیدا نشد! لطفاً اسم شهر رو به انگلیسی و درست بنویسید.</div>
+        </div>
+    </section>
+
+    <script>
+        // تغییر تم
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            themeToggle.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
+        });
+
+        // کدهای آب و هوا
+        const getWeatherBtn = document.getElementById('get-weather-btn');
+        const cityInput = document.getElementById('city-input');
+
+        getWeatherBtn.addEventListener('click', fetchWeather);
+        cityInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') fetchWeather(); });
+
+        async function fetchWeather() {
+            const city = cityInput.value.trim();
+            if (!city) return;
+
+            const resultBox = document.getElementById('weather-result');
+            const errorBox = document.getElementById('error-msg');
+            resultBox.classList.add('hidden');
+            errorBox.classList.add('hidden');
+
+            try {
+                // ۱. گرفتن مختصات شهر (طول و عرض جغرافیایی)
+                const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=fa`);
+                const geoData = await geoRes.json();
+
+                if (!geoData.results || geoData.results.length === 0) {
+                    errorBox.classList.remove('hidden');
+                    return;
+                }
+
+                const { latitude, longitude, name, country } = geoData.results[0];
+
+                // ۲. گرفتن اطلاعات آب و هوا با استفاده از مختصات
+                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`);
+                const weatherData = await weatherRes.json();
+
+                const current = weatherData.current_weather;
+                
+                // ۳. نمایش اطلاعات روی سایت
+                document.getElementById('city-name').innerText = `${name}، ${country}`;
+                document.getElementById('temp').innerText = `${current.temperature} °C`;
+                
+                // ترجمه کد وضعیت هوا به فارسی
+                const weatherCodes = {
+                    0: "آفتابی ☀️", 1: "غیره ابری 🌤️", 2: "نیمه ابری ⛅", 3: "ابری ☁️",
+                    45: "مه 🌫️", 48: "مه یخ زدان 🌫️",
+                    51: "نم‌نم باران 🌦️", 53: "باران ملایم 🌧️", 55: "باران شدید 🌧️",
+                    61: "باران 🌧️", 63: "باران شدید 🌧️", 65: "باران خیلی شدید ⛈️",
+                    71: "برف سبک 🌨️", 73: "برف 🌨️", 75: "برف شدید ❄️",
+                    80: "رگبار باران 🌦️", 81: "رگبار شدید 🌧️", 82: "رگبار خیلی شدید ⛈️",
+                    95: "رعد و برق ⛈️", 96: "رعد و برق با تگرگ ⛈️", 99: "رعد و برق شدید ⛈️"
+                };
+                document.getElementById('desc').innerText = weatherCodes[current.weathercode] || "نامشخص";
+                document.getElementById('wind').innerText = `💨 سرعت باد: ${current.windspeed} km/h`;
+
+                resultBox.classList.remove('hidden');
+            } catch (error) {
+                errorBox.innerText = "ارتباط با سرور قطع شد. اینترنتت رو چک کن.";
+                errorBox.classList.remove('hidden');
+            }
+        }
+    </script>
+
+</body>
+</html>
