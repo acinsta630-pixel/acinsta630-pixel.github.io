@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>هوش مصنوعی امیر</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- بخش بک‌گراند متحرک -->
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav>
+        <div class="logo">Amir</div>
+        <div class="nav-controls">
+            <ul class="menu">
+                <li><a href="index.html" data-en="Home">خانه</a></li>
+                <li><a href="ai.html" data-en="AI">هوش مصنوعی</a></li>
+            </ul>
+            <button id="lang-toggle">🌐</button>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </nav>
+
+    <!-- صفحه چت هوش مصنوعی -->
+    <section class="ai-page">
+        <h1 class="section-title" data-en="Chat with Amir's AI! 🤖">با هوش مصنوعی امیر چت کن! 🤖</h1>
+        
+        <div class="ai-chat-container">
+            <div class="chat-header">
+                <h3 data-en="Amir's Smart Assistant">دستیار هوشمند امیر</h3>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot" data-en="Hello! I am Amir's AI assistant. Ask me anything!">سلام! من دستیار هوش مصنوعی امیر هستم. هر سوالی داری بپرس!</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="سوالت رو بنویس..." data-en-placeholder="Type your question...">
+                <button id="chat-send" data-en="Send">ارسال</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ۱. تغییر تم
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            themeToggle.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
+        });
+
+        // ۲. کدهای تغییر زبان
+        const langToggle = document.getElementById('lang-toggle');
+        let isEnglish = false;
+
+        langToggle.addEventListener('click', () => {
+            isEnglish = !isEnglish;
+            const translatables = document.querySelectorAll('[data-en]');
+            
+            if (isEnglish) {
+                document.documentElement.lang = 'en';
+                document.documentElement.dir = 'ltr';
+                langToggle.textContent = '🇮🇷';
+                translatables.forEach(el => {
+                    if (!el.dataset.fa) el.dataset.fa = el.innerHTML;
+                    el.innerHTML = el.dataset.en;
+                });
+                const chatInput = document.getElementById('chat-input');
+                if(chatInput.dataset.enPlaceholder) chatInput.placeholder = chatInput.dataset.enPlaceholder;
+            } else {
+                document.documentElement.lang = 'fa';
+                document.documentElement.dir = 'rtl';
+                langToggle.textContent = '🌐';
+                translatables.forEach(el => { el.innerHTML = el.dataset.fa; });
+                document.getElementById('chat-input').placeholder = "سوالت رو بنویس...";
+            }
+        });
+
+        // ۳. کدهای ربات آفلاین (فوق باهوش)
+        const chatSend = document.getElementById('chat-send');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            chatMessages.innerHTML += `<div class="message user">${text}</div>`;
+            chatInput.value = '';
+            
+            const reply = getBotReply(text.toLowerCase());
+            
+            chatMessages.innerHTML += `<div class="message bot" id="loading-msg">${isEnglish ? 'Thinking...' : 'در حال فکر کردن...'}</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                document.getElementById('loading-msg').remove();
+                chatMessages.innerHTML += `<div class="message bot">${reply}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 800);
+        }
+
+        function getBotReply(text) {
+            if (isEnglish) {
+                if (text.includes("hello") || text.includes("hi") || text.includes("hey")) return "Hello! Welcome to Amir's website. How can I help you?";
+                if (text.includes("who is amir") || text.includes("about amir")) return "Amir is a talented Front-End Developer who loves building modern and professional websites.";
+                if (text.includes("skill") || text.includes("tech") || text.includes("stack")) return "Amir is skilled in HTML, CSS, JavaScript, and modern UI/UX design.";
+                if (text.includes("project") || text.includes("work") || text.includes("portfolio")) return "You can see Amir's projects in the 'Projects' section on the home page.";
+                if (text.includes("contact") || text.includes("email") || text.includes("reach")) return "You can contact Amir through the social links in the footer.";
+                return "I am a simple assistant bot. I can answer questions about Amir's skills, projects, and contact info. What would you like to know?";
+            } else {
+                // دیکشنری بزرگ کلمات
+                if (text.includes("سلام") || text.includes("درود") || text.includes("hi") || text.includes("hey")) return "سلام! به سایت امیر خوش اومدید. می‌تونید درباره مهارت‌ها، پروژه‌ها یا راه‌های ارتباطی سوال بپرسید.";
+                if (text.includes("خوبی") || text.includes("حالت") || text.includes("چطوری")) return "من یه رباتم و همیشه عالی‌ام! شما چطوری؟ می‌تونید درباره امیر سوال کنید.";
+                
+                if (text.includes("کی هستی") || text.includes("تو چی") || text.includes("اسمت") || text.includes("چه کار")) return "من دستیار هوشمند امیر هستم که برای راهنمایی شما تو این سایت ساخته شدم! 🤖";
+                if (text.includes("امیر") || text.includes("درباره") || text.includes("بیوگرافی") || text.includes("شما")) return "امیر یک برنامه‌نویس فرانت‌اند (Front-End) هست که عاشق طراحی سایت‌های مدرن و حرفه‌ایه.";
+                
+                if (text.includes("مهارت") || text.includes("بلدی") || text.includes("تخصص") || text.includes("زبان") || text.includes("چه چیز")) return "امیر به زبان‌های HTML، CSS، JavaScript و طراحی رابط کاربری (UI/UX) مسلط هست.";
+                if (text.includes("پروژه") || text.includes("نمونه کار") || text.includes("کارها") || text.includes("ساخته")) return "می‌تونید نمونه کارهای امیر رو تو بخش «پروژه‌های من» تو صفحه اصلی ببینید.";
+                
+                if (text.includes("تماس") || text.includes("ایمیل") || text.includes("شبکه") || text.includes("ارتباط") || text.includes("تلگرام") || text.includes("اینستا")) return "برای تماس با امیر می‌تونید از لینک‌های شبکه‌های اجتماعی تو پایین سایت استفاده کنید.";
+                if (text.includes("قیمت") || text.includes("هزینه") || text.includes("پروژه گرفتن") || text.includes("چقدر") || text.includes("دلار") || text.includes("تومان")) return "برای استعلام قیمت پروژه‌ها، لطفاً از طریق راه‌های ارتباطی در پایین سایت با امیر در ارتباط باشید.";
+                
+                if (text.includes("سن") || text.includes("چند سال")) return "سن مهم نیست، مهم اشتیاق به یادگیریه! اما امیر یه برنامه‌نویس جوان و پرانگیزه. 😉";
+                if (text.includes("باهوش") || text.includes("چقدر")) return "من باهوش‌ترین ربات ساخته دست امیرم! سختیت رو بپرس. 😎";
+                
+                if (text.includes("ممنون") || text.includes("مرسی") || text.includes("تشکر") || text.includes("خوبه")) return "خواهش می‌کنم! خوشحالم که تونستم کمکتون کنم. 😊";
+                if (text.includes("خداحافظ") || text.includes("بای")) return "خداحافظ! امیدوارم سایت رو دوست داشته باشید.";
+
+                // جواب‌های تصادفی وقتی سوالی خارج از دایره پرسیده میشه
+                const fallbacks = [
+                    "سوال جالبیه! اما من بیشتر درباره مهارت‌ها، پروژه‌ها و راه‌های ارتباطی امیر اطلاع دارم. 🤖",
+                    "متأسفم، تخصص من بیشتر روی معرفی امیره. می‌تونید درباره پروژه‌هاش سوال کنید؟",
+                    "من یه ربات راهنما هستم. شاید بتونید این سوال رو تو گوگل جستجو کنید، اما اگه درباره سایت یا امیر سوالی بود من اینجام!"
+                ];
+                return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+            }
+        }
+    </script>
+
+</body>
+</html>
