@@ -24,10 +24,9 @@
             <ul class="menu">
                 <li><a href="index.html" data-en="Home">خانه</a></li>
                 <li><a href="ai.html" data-en="AI">هوش مصنوعی</a></li>
+                <li><a href="weather.html" data-en="Weather">آب و هوا</a></li>
             </ul>
-            <!-- دکمه تغییر زبان -->
             <button id="lang-toggle">🌐</button>
-            <!-- دکمه تغییر تم -->
             <button id="theme-toggle">🌙</button>
         </div>
     </nav>
@@ -70,7 +69,8 @@
                     <h3 data-en="Weather App">اپلیکیشن آب و هوا</h3>
                     <p data-en="Displaying real-time weather conditions of cities using API.">نمایش وضعیت آب و هوای لحظه‌ای شهرها با استفاده از API.</p>
                     <div class="project-tags"><span>React</span><span>API</span></div>
-                    <a href="#" class="project-btn" data-en="View Project">مشاهده پروژه</a>
+                    <!-- لینک مستقیم به صفحه آب و هوا -->
+                    <a href="weather.html" class="project-btn" data-en="View Project">مشاهده پروژه</a>
                 </div>
             </div>
             <div class="project-card reveal">
@@ -118,16 +118,16 @@
             
             if (isEnglish) {
                 document.documentElement.lang = 'en';
-                document.documentElement.dir = 'ltr'; // چپ‌چین شدن سایت
-                langToggle.textContent = '🇮🇷'; // تبدیل به پرچم ایران
+                document.documentElement.dir = 'ltr';
+                langToggle.textContent = '🇮🇷';
                 
                 translatables.forEach(el => {
-                    if (!el.dataset.fa) el.dataset.fa = el.innerHTML; // ذخیره متن فارسی
+                    if (!el.dataset.fa) el.dataset.fa = el.innerHTML;
                     el.innerHTML = el.dataset.en;
                 });
             } else {
                 document.documentElement.lang = 'fa';
-                document.documentElement.dir = 'rtl'; // راست‌چین شدن سایت
+                document.documentElement.dir = 'rtl';
                 langToggle.textContent = '🌐';
                 
                 translatables.forEach(el => {
