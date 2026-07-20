@@ -1,0 +1,541 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Tahoma,Arial,sans-serif;
+    overflow-x: hidden; /* جلوگیری از اسکرول افقی ناشی از بک‌گراند */
+}
+
+/*================ NAVBAR ================*/
+nav{
+    width:100%;
+    background:rgba(30, 41, 59, 0.8); /* کمی شفاف کردم تا بک‌گراند پشتش پیداش باشه */
+    backdrop-filter: blur(10px);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 60px;
+    position: relative;
+    z-index: 10;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+    color:#38bdf8;
+}
+
+.menu{
+    list-style: none;
+    display: flex;
+}
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    margin-right:25px;
+    transition:.3s;
+}
+
+.menu a:hover{
+    color:#38bdf8;
+}
+
+/*================ HERO (ترکیب شده) ================*/
+.hero{
+    width:90%;
+    max-width:1200px;
+    margin:70px auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:60px;
+    position: relative;
+    z-index: 5; /* قرار گرفتن روی بک‌گراند */
+}
+
+.hero-text{
+    width:50%;
+}
+
+.hero-text h3{
+    color:#38bdf8;
+    font-size:25px;
+}
+
+.hero-text h1{
+    margin-top:15px;
+    font-size:65px;
+}
+
+.hero-text span{
+    color:#38bdf8;
+}
+
+.hero-text h2{
+    margin-top:10px;
+    color:#94a3b8;
+}
+
+.hero-text p{
+    margin-top:30px;
+    line-height:35px;
+    color:#d1d5db;
+    font-size:19px;
+}
+
+.hero-image{
+    width:50%;
+    text-align:center;
+}
+
+.profile-img{
+    width:350px;
+    border-radius:30px;
+    border:5px solid #38bdf8;
+    transition:.5s;
+    box-shadow:0 0 35px rgba(56,189,248,.4);
+}
+
+.profile-img:hover{
+    transform:scale(1.05) rotate(2deg);
+}
+
+/*================ BUTTON ================*/
+button{
+    margin-top:40px;
+    padding:15px 45px;
+    border:none;
+    border-radius:40px;
+    font-size:18px;
+    cursor:pointer;
+    color:white;
+    background:linear-gradient(45deg,#38bdf8,#ec4899);
+    transition:.4s;
+}
+
+button:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 30px #38bdf8;
+}
+
+/*================ FOOTER ================*/
+footer{
+    margin-top:100px;
+    background:rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(10px);
+    padding:35px;
+    text-align:center;
+    position: relative;
+    z-index: 10;
+}
+
+.socials{
+    margin-top:15px;
+}
+
+.socials a{
+    color:#38bdf8;
+    text-decoration:none;
+    margin:0 10px;
+}
+
+.socials a:hover{
+    color:white;
+}
+
+/*================ مرحله ۴: بک‌گراند متحرک ================*/
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* قرار گرفتن در پشت کل سایت */
+    overflow: hidden;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px); /* ایجاد حالت تاری و نرمی */
+    opacity: 0.5;
+    animation: float 12s infinite ease-in-out;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: #38bdf8;
+    top: -100px;
+    right: -100px;
+}
+
+.blob-2 {
+    width: 350px;
+    height: 350px;
+    background: #ec4899;
+    bottom: -50px;
+    left: -50px;
+    animation-delay: 4s;
+}
+
+.blob-3 {
+    width: 300px;
+    height: 300px;
+    background: #8b5cf6;
+    top: 40%;
+    left: 40%;
+    animation-delay: 8s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+}
+/*================ مرحله ۵: مهارت‌ها ================*/
+.skills {
+    width: 90%;
+    max-width: 1200px;
+    margin: 100px auto;
+    position: relative;
+    z-index: 5;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 50px;
+    color: white;
+}
+
+/* یک خط رنگی زیر تیتر برای زیبایی بیشتر */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(45deg, #38bdf8, #ec4899);
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+.skills-container {
+    background: rgba(30, 41, 59, 0.7); /* پس‌زمینه شیشه‌ای */
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.skill-item {
+    margin-bottom: 30px;
+}
+
+.skill-item:last-child {
+    margin-bottom: 0;
+}
+
+.skill-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #e2e8f0;
+    font-weight: bold;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #0f172a;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(45deg, #38bdf8, #ec4899);
+    border-radius: 10px;
+    width: 0; /* در ابتدا صفر است تا با جاوا اسکریپت (مرحله ۷) انیمیشن شود */
+    transition: width 1.5s ease-in-out; /* انیمیشن نرم پر شدن */
+}
+/*================ مرحله ۶: کارت‌های پروژه ================*/
+.projects {
+    width: 90%;
+    max-width: 1200px;
+    margin: 100px auto;
+    position: relative;
+    z-index: 5;
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* چیدمان ریسپانسیو کارت‌ها */
+    gap: 30px;
+}
+
+.project-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden; /* برای گرد شدن گوشه عکس‌ها */
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* افکت هاور برای کارت */
+.project-card:hover {
+    transform: translateY(-15px); /* بالا آمدن کارت */
+    box-shadow: 0 20px 40px rgba(56, 189, 248, 0.2); /* سایه آبی رنگ */
+    border-color: rgba(56, 189, 248, 0.5);
+}
+
+.project-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* زوم شدن عکس موقع هاور */
+.project-card:hover img {
+    transform: scale(1.1);
+}
+
+.project-info {
+    padding: 20px;
+}
+
+.project-info h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.project-info p {
+    color: #cbd5e1;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.project-tags span {
+    background: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.project-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(45deg, #38bdf8, #ec4899);
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.project-btn:hover {
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+    transform: scale(1.05);
+}
+/*================ مرحله ۷: انیمیشن اسکرول ================*/
+.reveal {
+    opacity: 0; /* در ابتدا نامرئی */
+    transform: translateY(50px); /* کمی پایین‌تر از جایگاه اصلی */
+    transition: all 1s ease; /* سرعت و نرمی انیمیشن */
+}
+
+.reveal.active {
+    opacity: 1; /* مرئی شود */
+    transform: translateY(0); /* به جایگاه اصلی برگردد */
+}
+
+/* یک تاخیر کوچک برای کارت‌های پروژه تا یکی‌یکی بیان */
+.project-card.reveal {
+    transition-delay: 0.2s;
+}
+/*================ مرحله ۸: حالت روشن/تاریک (اصلاح شده) ================*/
+
+/* تنظیمات دکمه تغییر تم */
+#theme-toggle {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px 12px;
+    border-radius: 50%;
+    margin-right: 20px;
+    transition: 0.3s;
+}
+
+#theme-toggle:hover {
+    background: rgba(56, 189, 248, 0.2);
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+}
+
+/* رنگ‌های حالت روشن (Light Mode) */
+body.light-mode {
+    background: #f1f5f9; /* پس‌زمینه روشن */
+    color: #1e293b; /* رنگ اصلی متن‌ها به خاکستری تیره تغییر کرد */
+}
+
+/* تیترها در حالت روشن */
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode .section-title {
+    color: #0f172a; /* تیترها مشکی/خاکستری خیلی تیره */
+}
+
+body.light-mode .hero-text h2 {
+    color: #475569; /* زیرتیتر هیرو (Front-End Developer) خاکستری متوسط */
+}
+
+body.light-mode .logo {
+    color: #0284c7; /* رنگ لوگو در حالت روشن آبی تیره‌تر تا خوانا باشه */
+}
+
+body.light-mode nav,
+body.light-mode footer {
+    background: rgba(226, 232, 240, 0.8); /* نوار بالایی و فوتر روشن */
+}
+
+body.light-mode .menu a {
+    color: #1e293b; /* منوها خاکستری تیره */
+}
+
+body.light-mode .menu a:hover {
+    color: #0284c7; /* هاور منو آبی تیره */
+}
+
+body.light-mode .hero-text p,
+body.light-mode .project-info p {
+    color: #475569; /* متن‌های توضیحات خاکستری متوسط */
+}
+
+body.light-mode .skills-container,
+body.light-mode .project-card {
+    background: rgba(255, 255, 255, 0.7); /* باکس‌ها سفید میشن */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* سایه ملایم‌تر برای تم روشن */
+}
+
+body.light-mode .progress-bar {
+    background: #e2e8f0; /* ریل نوار پیشرفت */
+}
+
+body.light-mode .project-tags span {
+    background: rgba(2, 132, 199, 0.1);
+    color: #0284c7;
+    border: 1px solid rgba(2, 132, 199, 0.2);
+}
+
+body.light-mode .blob {
+    opacity: 0.3; /* کم‌رنگ‌تر شدن حباب‌های بک‌گراند */
+}
+/* مشکی شدن متن‌های نام مهارت و درصد در تم روشن */
+body.light-mode .skill-info {
+    color: #0f172a;
+}
+/*================ مرحله ۹: ریسپانسیو برای موبایل ================*/
+
+@media (max-width: 768px) {
+    
+    /* نوار بالایی (Navbar) */
+    nav {
+        flex-direction: column; /* لوگو و منو زیر هم قرار بگیرن */
+        gap: 15px;
+        padding: 20px;
+    }
+
+    /* بخش هیرو */
+    .hero {
+        flex-direction: column-reverse; /* عکس بیاد بالا، متن بیاد پایین */
+        text-align: center; /* وسط‌چین شدن متن‌ها */
+        gap: 40px;
+        margin-top: 40px;
+    }
+
+    .hero-text, .hero-image {
+        width: 100%; /* عرض کامل صفحه رو گرفتن */
+    }
+
+    .hero-text h1 {
+        font-size: 45px; /* کوچیک شدن فونت تیتر */
+    }
+
+    .profile-img {
+        width: 250px; /* کوچیک شدن عکس پروفایل */
+    }
+
+    /* تیتر بخش‌های مهارت‌ها و پروژه‌ها */
+    .section-title {
+        font-size: 30px;
+    }
+}
+
+/* برای گوشی‌های خیلی کوچیک (مثل آیفون سیریز قدیمی) */
+@media (max-width: 480px) {
+    
+    .hero-text h1 {
+        font-size: 35px;
+    }
+    
+    .hero-text p {
+        font-size: 16px;
+    }
+
+    /* منوهای بالای سایت بشن دو خطی یا کنار هم فشرده تر */
+    .menu {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .menu a {
+        margin: 5px 10px;
+        font-size: 14px;
+    }
+
+    /* دکمه تغییر تم بیاد وسط */
+    .nav-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #theme-toggle {
+        margin-right: 0;
+    }
+}
