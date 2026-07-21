@@ -55,3 +55,4 @@ time:new Date().toString()
 
 
 console.log("✅ اطلاعات ارسال شد");
+<script type="module" src="script.js?v=10"></script>
