@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>سایت حرفه‌ای امیر</title>
+    <link rel="stylesheet" href="style.css?v=20">
+</head>
+
+<body>
+
+    <!-- بخش بک‌گراند متحرک -->
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav>
+        <div class="logo">Amir</div>
+        <div class="nav-controls">
+            <ul class="menu">
+                <li><a href="index.html" data-en="Home">خانه</a></li>
+                <li><a href="ai.html" data-en="AI">هوش مصنوعی</a></li>
+                <li><a href="weather.html" data-en="Weather">آب و هوا</a></li>
+            </ul>
+            <button id="lang-toggle">🌐</button>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </nav>
+
+    <!-- بخش معرفی (هیرو) -->
+    <section class="hero">
+        <div class="hero-text">
+            <h3 data-en="👋 Welcome">👋 سلام، خوش اومدی</h3>
+            <h1 data-en="I am <span>Amir</span>">من <span>امیر</span> هستم</h1>
+            <h2>Front-End Developer</h2>
+            <p data-en="Passionate about modern web design, programming, and learning new technologies. My goal is to build beautiful, fast, and professional websites.">
+                عاشق طراحی سایت‌های مدرن، برنامه‌نویسی و یادگیری تکنولوژی‌های جدید. هدفم ساختن سایت‌هایی زیبا، سریع و حرفه‌ای است.
+            </p>
+            <button onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})" data-en="View Projects">مشاهده پروژه‌ها</button>
+        </div>
+        
+        <div class="hero-image">
+            <a href="ai.html">
+                <img src="ai-pic.jpg" class="profile-img" alt="AI Chat" style="cursor: pointer;">
+            </a>
+        </div>
+    </section>
+
+    <!-- بخش کارت‌های پروژه -->
+    <section class="projects" id="projects">
+        <h2 class="section-title reveal" data-en="My Projects">پروژه‌های من</h2>
+        <div class="projects-container">
+            
+            <!-- پروژه اول: سایت شخصی -->
+            <div class="project-card reveal">
+                <img src="shop.jpg" alt="Portfolio Website">
+                <div class="project-info">
+                    <h3 data-en="Portfolio Website">سایت شخصی (پورتفولیو)</h3>
+                    <p data-en="A modern, responsive personal website with dark/light mode and multi-language support.">یک سایت شخصی مدرن و واکنش‌گرا با حالت تاریک/روشن و پشتیبانی از دو زبان.</p>
+                    <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+                    <a href="index.html" class="project-btn" data-en="View Project">مشاهده پروژه</a>
+                </div>
+            </div>
+
+            <!-- پروژه دوم: اپلیکیشن آب و هوا -->
+            <div class="project-card reveal">
+                <img src="water.jpg" alt="Weather App">
+                <div class="project-info">
+                    <h3 data-en="Weather App">اپلیکیشن آب و هوا</h3>
+                    <p data-en="Displaying real-time weather conditions of cities using API.">نمایش وضعیت آب و هوای لحظه‌ای شهرها با استفاده از API.</p>
+                    <div class="project-tags"><span>JavaScript</span><span>API</span></div>
+                    <a href="weather.html" class="project-btn" data-en="View Project">مشاهده پروژه</a>
+                </div>
+            </div>
+
+            <!-- پروژه سوم: دستیار هوش مصنوعی -->
+            <div class="project-card reveal">
+                <img src="dashbord.jpg" alt="AI Chatbot">
+                <div class="project-info">
+                    <h3 data-en="AI Chatbot">دستیار هوش مصنوعی</h3>
+                    <p data-en="A smart AI chatbot with chat history and multi-language support.">چت‌بات هوشمند با قابلیت ذخیره تاریخچه مکالمات و پشتیبانی از دو زبان.</p>
+                    <div class="project-tags"><span>JavaScript</span><span>AI</span></div>
+                    <a href="ai.html" class="project-btn" data-en="View Project">مشاهده پروژه</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- فوتر -->
+    <footer>
+        <p data-en="All rights reserved for Amir © 2026">تمامی حقوق برای امیر محفوظ است © 2026</p>
+    </footer>
+
+    <script>
+        // انیمیشن اسکرول
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.2 });
+        reveals.forEach(reveal => { observer.observe(reveal); });
+
+        // تغییر تم
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            themeToggle.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
+        });
+
+        // کدهای تغییر زبان سایت
+        const langToggle = document.getElementById('lang-toggle');
+        let isEnglish = false;
+
+        langToggle.addEventListener('click', () => {
+            isEnglish = !isEnglish;
+            const translatables = document.querySelectorAll('[data-en]');
+            
+            if (isEnglish) {
+                document.documentElement.lang = 'en';
+                document.documentElement.dir = 'ltr';
+                langToggle.textContent = '🇮🇷';
+                
+                translatables.forEach(el => {
+                    if (!el.dataset.fa) el.dataset.fa = el.innerHTML;
+                    el.innerHTML = el.dataset.en;
+                });
+            } else {
+                document.documentElement.lang = 'fa';
+                document.documentElement.dir = 'rtl';
+                langToggle.textContent = '🌐';
+                
+                translatables.forEach(el => {
+                    el.innerHTML = el.dataset.fa;
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
