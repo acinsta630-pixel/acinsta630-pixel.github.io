@@ -5,7 +5,9 @@
 
 <meta charset="UTF-8">
 
-<title>Amir AI Admin 🧠</title>
+<title>
+Amir AI Admin v8 🧠
+</title>
 
 
 <style>
@@ -25,7 +27,7 @@ padding:30px;
 background:#1f2937;
 padding:25px;
 border-radius:20px;
-max-width:600px;
+max-width:700px;
 margin:auto;
 
 }
@@ -52,8 +54,10 @@ cursor:pointer;
 background:#22c55e;
 color:white;
 font-size:16px;
+margin:5px;
 
 }
+
 
 
 .card{
@@ -66,6 +70,7 @@ border-radius:15px;
 }
 
 
+
 .delete{
 
 background:#ef4444;
@@ -73,9 +78,29 @@ background:#ef4444;
 }
 
 
+
+.edit{
+
+background:#3b82f6;
+
+}
+
+
+
+.count{
+
+background:#0f766e;
+padding:10px;
+border-radius:10px;
+
+}
+
+
+
 </style>
 
 </head>
+
 
 
 
@@ -86,12 +111,18 @@ background:#ef4444;
 
 
 <h1>
-🧠 Amir AI Admin
+🧠 Amir AI Admin v8
 </h1>
 
 
+<div class="count" id="count">
+
+</div>
+
+
+
 <h3>
-آموزش جدید بده
+آموزش جدید بده 🚀
 </h3>
 
 
@@ -109,18 +140,33 @@ placeholder="جواب">
 
 
 <button onclick="teach()">
-یاد بده 🚀
+
+یاد بده 🧠
+
 </button>
 
 
 
+
 <h2>
-📚 چیزهایی که یاد گرفته:
+📚 حافظه Amir AI
 </h2>
 
 
 
-<div id="list"></div>
+<input
+id="search"
+placeholder="جستجو 🔍"
+oninput="show()"
+/>
+
+
+
+
+<div id="list">
+
+</div>
+
 
 
 </div>
@@ -135,65 +181,11 @@ placeholder="جواب">
 
 let learned = JSON.parse(
 
-localStorage.getItem("amir_learned")
+localStorage.getItem(
+"amir_learned"
+)
 
 ) || [];
-
-
-
-
-
-function teach(){
-
-
-let q =
-document.getElementById("question").value;
-
-
-let a =
-document.getElementById("answer").value;
-
-
-
-if(!q || !a){
-
-alert("سوال و جواب را بنویس");
-
-return;
-
-}
-
-
-
-learned.push({
-
-keywords:[q],
-
-answers:[a]
-
-});
-
-
-
-save();
-
-
-document.getElementById("question").value="";
-
-document.getElementById("answer").value="";
-
-
-
-show();
-
-
-
-alert(
-"یاد گرفتم 🧠✅"
-);
-
-
-}
 
 
 
@@ -222,10 +214,271 @@ JSON.stringify(learned)
 
 
 
+
+function teach(){
+
+
+
+let q =
+document.getElementById(
+"question"
+).value.trim();
+
+
+
+let a =
+document.getElementById(
+"answer"
+).value.trim();
+
+
+
+
+
+if(!q || !a){
+
+alert(
+"سوال و جواب را بنویس"
+);
+
+return;
+
+}
+
+
+
+
+
+
+
+let old =
+learned.find(item =>
+
+item.keywords.includes(q)
+
+);
+
+
+
+
+
+
+if(old){
+
+
+
+if(
+!old.answers.includes(a)
+){
+
+
+old.answers.push(a);
+
+
+}
+
+
+
+}
+
+else{
+
+
+learned.push({
+
+
+keywords:[
+q
+],
+
+
+answers:[
+a
+]
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+save();
+
+
+
+show();
+
+
+
+
+document.getElementById(
+"question"
+).value="";
+
+
+document.getElementById(
+"answer"
+).value="";
+
+
+
+
+alert(
+"یاد گرفتم 🧠✅"
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function show(){
+
+
+
+let box =
+document.getElementById(
+"list"
+);
+
+
+
+let search =
+document.getElementById(
+"search"
+).value
+.toLowerCase();
+
+
+
+
+box.innerHTML="";
+
+
+
+
+
+document.getElementById(
+"count"
+).innerHTML =
+
+"🧠 تعداد آموزش‌ها: "
++
+learned.length;
+
+
+
+
+
+
+
+learned.forEach((item,index)=>{
+
+
+let q =
+item.keywords[0];
+
+
+let a =
+item.answers.join(
+"<br>"
+);
+
+
+
+
+
+if(
+q.toLowerCase()
+.includes(search)
+){
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<b>
+${q}
+</b>
+
+
+<p>
+${a}
+</p>
+
+
+
+<button
+class="edit"
+onclick="editItem(${index})">
+
+ویرایش ✏️
+
+</button>
+
+
+
+<button
+class="delete"
+onclick="removeItem(${index})">
+
+حذف 🗑️
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+});
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
 function removeItem(index){
 
 
-learned.splice(index,1);
+learned.splice(
+index,
+1
+);
+
 
 
 save();
@@ -242,57 +495,57 @@ show();
 
 
 
-function show(){
 
 
-let box =
-document.getElementById("list");
+function editItem(index){
 
 
-box.innerHTML="";
-
-
-
-learned.forEach((item,index)=>{
+let q =
+prompt(
+"سوال جدید:",
+learned[index].keywords[0]
+);
 
 
 
-box.innerHTML += `
+let a =
+prompt(
+"جواب جدید:",
+learned[index].answers[0]
+);
 
 
-<div class="card">
 
 
-<b>
-${item.keywords[0]}
-</b>
+
+if(q && a){
 
 
-<p>
-${item.answers[0]}
-</p>
+
+learned[index].keywords=[
+q
+];
 
 
-<button 
-class="delete"
-onclick="removeItem(${index})">
-
-حذف 🗑️
-
-</button>
+learned[index].answers=[
+a
+];
 
 
-</div>
+
+save();
 
 
-`;
-
-
-});
-
+show();
 
 
 }
+
+
+}
+
+
+
 
 
 
@@ -301,8 +554,13 @@ show();
 
 
 
-</script>
+console.log(
+"🧠 Amir Admin v8 Ready"
+);
 
+
+
+</script>
 
 
 </body>
