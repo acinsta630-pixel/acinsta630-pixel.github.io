@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>هوش مصنوعی امیر</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.puter.com/v2/"></script>
+</head>
+
+<body class="ai-dark-page">
+
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="ai-nav">
+        <div class="logo">Amir</div>
+        <div class="nav-controls">
+            <ul class="menu">
+                <li><a href="index.html" data-en="Home">خانه</a></li>
+                <li><a href="ai.html" data-en="AI">هوش مصنوعی</a></li>
+                <li><a href="weather.html" data-en="Weather">آب و هوا</a></li>
+            </ul>
+            <button id="lang-toggle">🌐</button>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </nav>
+
+    <section class="ai-page">
+        <h1 class="ai-logo-title">AI Amir</h1>
+        
+        <!-- 🌟 دروازه ورود (اگر کاربر اطلاعات نداده باشه) -->
+        <div id="auth-gate" class="auth-gate">
+            <div class="auth-box">
+                <h2 data-en="Login to Chat">ورود به چت هوشمند</h2>
+                <p data-en="Please enter your details to continue.">برای استفاده از هوش مصنوعی، لطفاً اطلاعات خود را وارد کنید.</p>
+                <input type="text" id="user-name" placeholder="نام و نام خانوادگی" data-en-placeholder="Full Name">
+                <input type="email" id="user-email" placeholder="ایمیل" data-en-placeholder="Email">
+                <input type="tel" id="user-phone" placeholder="شماره همراه" data-en-placeholder="Phone Number">
+                <button id="auth-submit" data-en="Enter Chat">ورود به چت</button>
+                <p class="auth-error" id="auth-error"></p>
+            </div>
+        </div>
+
+        <!-- کادر چت (بعد از ورود نشون داده میشه) -->
+        <div class="ai-chat-container" id="chat-container" style="display: none;">
+            <div class="chat-header">
+                <h3 data-en="Amir's Smart Assistant">دستیار هوشمند امیر</h3>
+                <button id="clear-chat-btn" title="پاک کردن چت">🗑️</button>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="سوالت رو بنویس..." data-en-placeholder="Type your question...">
+                <button id="chat-send" data-en="Send">ارسال</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ۱. تغییر تم
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            themeToggle.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
+        });
+
+        // ۲. تغییر زبان
+        const langToggle = document.getElementById('lang-toggle');
+        let isEnglish = false;
+        langToggle.addEventListener('click', () => {
+            isEnglish = !isEnglish;
+            const translatables = document.querySelectorAll('[data-en]');
+            if (isEnglish) {
+                document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; langToggle.textContent = '🇮🇷';
+                translatables.forEach(el => { if (!el.dataset.fa) el.dataset.fa = el.innerHTML; el.innerHTML = el.dataset.en; });
+                document.getElementById('chat-input').placeholder = "Type your question...";
+            } else {
+                document.documentElement.lang = 'fa'; document.documentElement.dir = 'rtl'; langToggle.textContent = '🌐';
+                translatables.forEach(el => { el.innerHTML = el.dataset.fa; });
+                document.getElementById('chat-input').placeholder = "سوالت رو بنویس...";
+            }
+        });
+
+        // ۳. سیستم احراز هویت (Auth Gate)
+        const authGate = document.getElementById('auth-gate');
+        const chatContainer = document.getElementById('chat-container');
+        const authSubmit = document.getElementById('auth-submit');
+
+        function checkAuth() {
+            const user = localStorage.getItem('amir_ai_user');
+            if (user) {
+                authGate.style.display = 'none';
+                chatContainer.style.display = 'flex';
+                loadChat();
+            } else {
+                authGate.style.display = 'flex';
+                chatContainer.style.display = 'none';
+            }
+        }
+
+        authSubmit.addEventListener('click', () => {
+            const name = document.getElementById('user-name').value.trim();
+            const email = document.getElementById('user-email').value.trim();
+            const phone = document.getElementById('user-phone').value.trim();
+            const error = document.getElementById('auth-error');
+
+            if (!name || !email || !phone) {
+                error.innerText = isEnglish ? "Please fill in all fields." : "لطفاً تمام فیلدها را پر کنید.";
+                return;
+            }
+            
+            // ذخیره اطلاعات کاربر
+            localStorage.setItem('amir_ai_user', JSON.stringify({name, email, phone}));
+            checkAuth();
+        });
+
+        // ۴. سیستم چت و ذخیره سازی
+        const chatSend = document.getElementById('chat-send');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const clearChatBtn = document.getElementById('clear-chat-btn');
+
+        const defaultMsg = isEnglish ? `<div class="message bot">Hello! I am Amir's AI assistant.</div>` : `<div class="message bot">سلام! من دستیار هوش مصنوعی امیر هستم.</div>`;
+
+        function loadChat() {
+            const savedChat = localStorage.getItem('amirChatHistory');
+            chatMessages.innerHTML = savedChat || defaultMsg;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function saveChat() { localStorage.setItem('amirChatHistory', chatMessages.innerHTML); }
+
+        clearChatBtn.addEventListener('click', () => {
+            if (confirm(isEnglish ? "Clear chat?" : "چت پاک شود؟")) {
+                localStorage.removeItem('amirChatHistory');
+                chatMessages.innerHTML = defaultMsg;
+            }
+        });
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+        async function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            chatMessages.innerHTML += `<div class="message user">${text}</div>`;
+            chatInput.value = '';
+            chatMessages.innerHTML += `<div class="message bot" id="loading-msg">${isEnglish ? 'Thinking...' : 'در حال فکر کردن...'}</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const systemPrompt = isEnglish ? "You are a highly intelligent AI created by Amir." : "تو دستیار هوش مصنوعی امیر هستی. سازنده تو امیر است. به فارسی جواب بده.";
+                const response = await puter.ai.chat(`${systemPrompt}\n\nUser: ${text}`);
+                document.getElementById('loading-msg').remove();
+
+                let botReply = typeof response === 'string' ? response : (response.message?.content || "Error.");
+                chatMessages.innerHTML += `<div class="message bot">${botReply}</div>`;
+                saveChat();
+            } catch (error) {
+                document.getElementById('loading-msg').remove();
+                chatMessages.innerHTML += `<div class="message bot">ارتباط قطع است.</div>`;
+                saveChat();
+            }
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // چک کردن ورود کاربر هنگام لود صفحه
+        checkAuth();
+    </script>
+</body>
+</html>
