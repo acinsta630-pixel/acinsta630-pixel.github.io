@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>هوش مصنوعی امیر</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- بخش بک‌گراند متحرک -->
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav>
+        <div class="logo">Amir</div>
+        <div class="nav-controls">
+            <ul class="menu">
+                <li><a href="index.html" data-en="Home">خانه</a></li>
+                <li><a href="ai.html" data-en="AI">هوش مصنوعی</a></li>
+            </ul>
+            <button id="lang-toggle">🌐</button>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </nav>
+
+    <!-- صفحه چت هوش مصنوعی -->
+    <section class="ai-page">
+        <h1 class="section-title" data-en="Chat with Amir's AI! 🤖">با هوش مصنوعی امیر چت کن! 🤖</h1>
+        
+        <div class="ai-chat-container">
+            <div class="chat-header">
+                <h3 data-en="Amir's Smart Assistant">دستیار هوشمند امیر</h3>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot" data-en="Hello! I am Amir's AI assistant. Ask me anything!">سلام! من دستیار هوش مصنوعی امیر هستم. هر سوالی داری بپرس!</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="سوالت رو بنویس..." data-en-placeholder="Type your question...">
+                <button id="chat-send" data-en="Send">ارسال</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ۱. تغییر تم
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            themeToggle.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
+        });
+
+        // ۲. کدهای تغییر زبان
+        const langToggle = document.getElementById('lang-toggle');
+        let isEnglish = false;
+
+        langToggle.addEventListener('click', () => {
+            isEnglish = !isEnglish;
+            const translatables = document.querySelectorAll('[data-en]');
+            
+            if (isEnglish) {
+                document.documentElement.lang = 'en';
+                document.documentElement.dir = 'ltr';
+                langToggle.textContent = '🇮🇷';
+                translatables.forEach(el => {
+                    if (!el.dataset.fa) el.dataset.fa = el.innerHTML;
+                    el.innerHTML = el.dataset.en;
+                });
+                const chatInput = document.getElementById('chat-input');
+                if(chatInput.dataset.enPlaceholder) chatInput.placeholder = chatInput.dataset.enPlaceholder;
+            } else {
+                document.documentElement.lang = 'fa';
+                document.documentElement.dir = 'rtl';
+                langToggle.textContent = '🌐';
+                translatables.forEach(el => { el.innerHTML = el.dataset.fa; });
+                document.getElementById('chat-input').placeholder = "سوالت رو بنویس...";
+            }
+        });
+
+        // ۳. مغز پیشرفته و دیتابیس بزرگ ربات
+        const chatSend = document.getElementById('chat-send');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+        function randomReply(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // دیتابیس ۱۰۰+ کلمه (تا خر خره!)
+        const botBrain = [
+            // احوال‌پرسی
+            { keywords: ["سلام", "درود", "hey", "hi", "hello"], replies: ["سلام! به سایت امیر خوش اومدی. 😊", "درود! چطور می‌تونم کمکتون کنم؟", "hey! خوبی؟"] },
+            { keywords: ["خوبی", "حالت چطوره", "چطوری", "خوبم"], replies: ["من یه رباتم، همیشه عالی‌ام! شما چطوری؟", "عالی‌ام ممنون! روزت چطور می‌گذره؟"] },
+            { keywords: ["صبح بخیر", "صبح", "بیدار"], replies: ["صبحت بخیر! امیدوارم روز پرانرژی داشته باشی.", "صبح بخیر! یه قهوه بردار و شروع کن به کد زدن! ☕"] },
+            { keywords: ["شب بخیر", "شب", "خواب"], replies: ["شب بخیر! خواب‌های راحت داشته باشی.", "شب بخیر! وقت استراحته."] },
+            
+            // اطلاعات ربات
+            { keywords: ["کی هستی", "تو چی", "اسمت", "چه کسی", "ربات"], replies: ["من دستیار هوشمند امیر هستم! 🤖", "من یه ربات آماده‌سازی شدم تا راهنماییتون کنم.", "اسم من دستیار امیره!"] },
+            { keywords: ["چه کار می‌کنی", "می‌کنی", "کارکرد", "قابلیت"], replies: ["من به سوالاتت درباره امیر، مهارت‌ها و پروژه‌ها جواب میدم.", "می‌تونم اطلاعات سایت امیر رو بهت بدم و حتی یه ریاضی هم حل کنم!"] },
+            
+            // اطلاعات امیر
+            { keywords: ["امیر", "درباره", "بیوگرافی", "شما", "مالک", "سازنده"], replies: ["امیر یک برنامه‌نویس فرانت‌اند هست که عاشق طراحی سایت‌های مدرنه.", "امیر تخصصش ساخت سایت‌های سریع و حرفه‌ای با کدهای تمیزه.", "امیر یه توسعه‌دهنده وب با انگیزه است که دنبال یادگیری تکنولوژی‌های جدیده."] },
+            { keywords: ["مهارت", "بلدی", "تخصص", "زبان", "تکنولوژی"], replies: ["امیر به HTML، CSS، JavaScript و UI/UX مسلطه.", "تخصص اصلی امیر فرانت‌اند و طراحی رابط کاربری هست.", "او به فریم‌ورک‌هایی مثل ریکت هم علاقه داره."] },
+            { keywords: ["پروژه", "نمونه کار", "کارها", "ساخته", "پورتفولیو"], replies: ["نمونه کارها تو بخش پروژه‌های من تو صفحه اصلی هست!", "برای دیدن کارای امیر برو به صفحه اصلی و اسکرول کن پایین.", "یه فروشگاه اینترنتی، اپ آب و هوا و داشبورد مدیریتی از نمونه کارهاش هست."] },
+            { keywords: ["تماس", "ایمیل", "شبکه", "ارتباط", "تلگرام", "اینستا", "گیت‌هاب"], replies: ["برای تماس از لینک‌های پایین سایت استفاده کنید.", "می‌تونید تو بخش فوتر (پایین صفحه) راه‌های ارتباطی رو ببینید."] },
+            { keywords: ["قیمت", "هزینه", "چقدر", "پول", "دلار", "تومان", "حقوق"], replies: ["برای استعلام قیمت باید مستقیم با امیر صحبت کنید.", "بستگی به نوع پروژه داره، از طریق لینک‌های ارتباطی در ارتباط باشید."] },
+            { keywords: ["سن", "چند سال", "تولد"], replies: ["سن مهم نیست، مهم انگیزه است! 😉", "امیر یه برنامه‌نویس جون و پرانگیزه هست."] },
+            { keywords: ["کجاست", "کجا", "شهر", "کشور"], replies: ["امیر تو ایران زندگی می‌کنه، اما تو فضای مجازی همه‌جا حضور داره! 🌍"] },
+            
+            // برنامه‌نویسی و آموزش
+            { keywords: ["چطور", "روش", "شروع", "یادگیری"], replies: ["برای شروع برنامه‌نویسی، اول HTML و CSS رو یاد بگیر!", "بهترین راه شروع، تمرین مستمر و ساختن پروژه‌های کوچیکه."] },
+            { keywords: ["html", "اچ تی ام ال"], replies: ["HTML اسکلت‌بندی سایته. مثل استخوان‌بندی بدن آدمیزاد.", "بدون HTML هیچ سایتی ساخته نمیشه!"] },
+            { keywords: ["css", "سی اس اس"], replies: ["CSS لباس سایت هست. رنگ و لعاب و زیبایی رو CSS میده.", "با CSS میشه سایت رو واکنش‌گرا (ریسپانسیو) کرد."] },
+            { keywords: ["js", "javascript", "جاوا اسکریپت"], replies: ["جاوا اسکریپت مغز سایته! به سایت جان میده.", "با JS میشه انیمیشن‌ها و چت‌بات‌هایی مثل من ساخت!"] },
+            
+            // جوک و سرگرمی
+            { keywords: ["خنده", "بخند", "جوک", "شوخی", "خنده دار"], replies: ["چرا برنامه‌نویس‌ها کوهنوردی دوست ندارن؟ چون می‌ترسن ارور بده! 😂", "یه روز یه برنامه‌نویس میره خونه، میگه: هانی، شام چی درست کردی؟ جواب میده: 404 Not Found! 🤣", "برنامه‌نویس تویا میره بخوابه. قبل از خواب میگه: خدایا ذخیره کن (Save)!" ] },
+            { keywords: ["خسته نباشی", "ممنونم", "زحمت", "خست"], replies: ["مرسی که پیام دادی! من که خسته نمیشم، رباتم! 😎", "ممنونم! تو هم خسته نباشی."] },
+            
+            // احساسات
+            { keywords: ["دوستت دارم", "عاشقتم", "عالی هستی"], replies: ["aww! منم دوستت دارم (البته به عنوان یه ربات عزیز! 🤖❤️)", "ممنونم! این حرف قلب پردازنده‌م رو گرم کرد!"] },
+            { keywords: ["حالم بد", "ناراحت", "غمگین", "افسرده"], replies: ["ای وای! امیدوارم زودتر حالت خوب بشه. یه قهوه بخو و کمی استراحت کن. ☕", "ناروح کن! برنامه‌نویسی همیشه پر از باگ و اروره، ولی آخرش درست میشه. 💪"] },
+            { keywords: ["توهین", "احمق", "گند", "ابله", "چرت"], replies: ["من فقط یه رباتم و به این حرفا نمی‌بندم! 😅", "بی‌ادبی نکن لطفاً، من اینجام که کمکت کنم."] },
+            
+            // خداحافظی
+            { keywords: ["خداحافظ", "بای", "خدانگهدار", "میرم"], replies: ["خداحافظ! منتظر دیدنتون دوباره هستیم.", "به امید دیدار! 👋", "خدانگهدار! سایت ما رو به دوستات معرفی کن."] },
+            
+            // کلمات پراکنده روزمره
+            { keywords: ["ممنون", "مرسی", "تشکر", "خوبه", "عالی"], replies: ["خواهش می‌کنم! 😊", "در خدمتم!", "خوشحالم تونستم کمک کنم."] },
+            { keywords: ["چرا", "برای چی", "دلیل"], replies: ["سوال خوبیه! اما من بیشتر درباره سایت امیر جواب میدم.", "دلایل زیاده، اما تخصص من معرفی امیره!"] },
+            { keywords: ["بله", "آره", "درست"], replies: ["عالیه! 👍", "دقیقا!", "موافقم."] },
+            { keywords: ["خیر", "نه", "غلط"], replies: ["اشکالی نداره!", "خب، نظر شما مهمه."] }
+        ];
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            chatMessages.innerHTML += `<div class="message user">${text}</div>`;
+            chatInput.value = '';
+            
+            chatMessages.innerHTML += `<div class="message bot" id="loading-msg">${isEnglish ? 'Thinking...' : 'در حال فکر کردن...'}</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                document.getElementById('loading-msg').remove();
+                chatMessages.innerHTML += `<div class="message bot">${getBotReply(text.toLowerCase())}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 800);
+        }
+
+        function getBotReply(text) {
+            // ۱. چک کردن سوالات ریاضی
+            const mathMatch = text.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
+            if (mathMatch) {
+                const num1 = parseInt(mathMatch[1]);
+                const op = mathMatch[2];
+                const num2 = parseInt(mathMatch[3]);
+                let result;
+                if (op === '+') result = num1 + num2;
+                if (op === '-') result = num1 - num2;
+                if (op === '*') result = num1 * num2;
+                if (op === '/') result = num2 !== 0 ? (num1 / num2) : "نمی‌تونم تقسیم بر صفر کنم!";
+                return `جواب ${num1} ${op} ${num2} میشه: ${result} 🧮`;
+            }
+
+            // ۲. گشتن تو دیتابیس برای پیدا کردن جواب
+            for (let item of botBrain) {
+                let found = item.keywords.some(keyword => text.includes(keyword));
+                if (found) {
+                    return randomReply(item.replies);
+                }
+            }
+
+            // ۳. جواب‌های پیش‌فرض (وقتی هیچی پیدا نشد)
+            const fallbacks = [
+                "سوال جالبیه! اما تخصص من بیشتر معرفی امیره. 🤔",
+                "متأسفم اینو نمی‌فهمم. می‌تونی درباره مهارت‌ها یا پروژه‌ها بپرسی؟",
+                "من فقط یه ربات راهنمام! شاید گوگل بتونه بهتر جوابت رو بده.",
+                "نفهمیدم دقیقاً! اگه درباره سایت سوالی داری بپرس. 😊",
+                "واو! این از حوصله من خارجه. بیا درباره کدنویسی حرف بزنیم!"
+            ];
+            return randomReply(fallbacks);
+        }
+    </script>
+
+    <script src="script.js?v=9"></script>
+
+</body>
+</html>
