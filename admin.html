@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Amir AI Admin</title>
+
+</head>
+
+
+<body>
+
+
+<h1>
+🧠 پنل آموزش Amir AI
+</h1>
+
+
+<input 
+id="question"
+placeholder="سوال"
+/>
+
+
+<br><br>
+
+
+<input 
+id="answer"
+placeholder="جواب"
+/>
+
+
+<br><br>
+
+
+<button onclick="teachAI()">
+یاد بده 🚀
+</button>
+
+
+
+<script>
+
+
+let learned =
+JSON.parse(
+localStorage.getItem("amir_learned")
+)
+|| [];
+
+
+
+function teachAI(){
+
+
+let q =
+document.getElementById("question").value;
+
+
+let a =
+document.getElementById("answer").value;
+
+
+
+learned.push({
+
+keywords:[
+q
+],
+
+answers:[
+a
+]
+
+
+});
+
+
+
+localStorage.setItem(
+
+"amir_learned",
+
+JSON.stringify(learned)
+
+);
+
+
+
+alert(
+"یاد گرفتم 🧠✅"
+);
+
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
