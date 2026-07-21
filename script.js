@@ -1,7 +1,13 @@
-// Amir AI Firebase Test
+// =================================
+// Amir AI Firebase Online Test
+// =================================
+
+
+// Firebase Imports
 
 import { initializeApp } from 
 "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
 
 import {
 getDatabase,
@@ -12,6 +18,9 @@ get
 from
 "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
+
+
+// Firebase Config
 
 const firebaseConfig = {
 
@@ -37,22 +46,78 @@ appId:
 };
 
 
+
+
+// Start Firebase
+
 const app = initializeApp(firebaseConfig);
 
 const db = getDatabase(app);
 
 
-console.log("🔥 Firebase وصل شد");
+console.log("🔥 Firebase Connected");
 
+
+
+
+// تست ارسال اطلاعات
 
 set(
-ref(db,"test"),
+ref(db,"amirAI/test"),
 {
 message:"Amir AI Online",
 time:new Date().toString()
 }
+)
+
+.then(()=>{
+
+console.log("✅ Data Sent To Firebase");
+
+})
+
+
+.catch((error)=>{
+
+console.log(
+"❌ Firebase Error:",
+error
+);
+
+});
+
+
+
+
+// تست خواندن
+
+get(
+ref(db,"amirAI/test")
+)
+
+.then(snapshot=>{
+
+
+if(snapshot.exists()){
+
+
+console.log(
+"📦 Firebase Data:",
+snapshot.val()
 );
 
 
-console.log("✅ اطلاعات ارسال شد");
-<script type="module" src="script.js?v=10"></script>
+}
+
+else{
+
+
+console.log(
+"Database Empty"
+);
+
+
+}
+
+
+});
