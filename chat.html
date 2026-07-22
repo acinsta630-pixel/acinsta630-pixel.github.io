@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amir AI - محیط گفتگو</title>
+    <link rel="stylesheet" href="style.css?v=52">
+</head>
+
+<body class="ai-dark-page">
+
+    <!-- گوی‌های نورانی پس‌زمینه -->
+    <div class="glow-sphere sphere-1"></div>
+    <div class="glow-sphere sphere-2"></div>
+
+    <!-- NAVBAR (منوی اصلی) -->
+    <nav class="ai-nav">
+        <div class="logo">
+            <span class="logo-icon"></span>
+            Amir AI
+        </div>
+
+        <ul class="menu">
+            <li><a href="index.html">خانه</a></li>
+            <li><a href="ai.html">هوش مصنوعی</a></li>
+            <li><a href="weather.html">آب و هوا</a></li>
+        </ul>
+
+        <div class="nav-controls">
+            <button id="lang-toggle" title="تغییر زبان">🌐</button>
+            <button id="theme-toggle" title="تغییر تم">🌙</button>
+        </div>
+    </nav>
+
+    <!-- AI CHAT WORKSPACE -->
+    <section class="ai-page futuristic-ai">
+        <div class="chat-workspace futuristic-chat" id="chat-workspace">
+
+            <!-- SIDEBAR (منوی کشویی تاریخچه - ChatGPT Style) -->
+            <aside class="chat-sidebar" id="chat-sidebar">
+                <button id="new-chat-btn" class="new-chat-btn">
+                    ➕ چت جدید
+                </button>
+
+                <div class="sidebar-title">تاریخچه گفتگوها</div>
+
+                <ul id="chat-list"></ul>
+
+                <div class="ai-sidebar-status">
+                    <span class="status-dot"></span>
+                    Amir AI آنلاین
+                </div>
+            </aside>
+
+            <!-- MAIN CHAT AREA -->
+            <main class="ai-chat-container">
+
+                <!-- HEADER -->
+                <header class="chat-header">
+                    <div class="chat-header-right">
+                        <!-- دکمه باز/بسته کردن منو -->
+                        <button id="toggle-sidebar-btn" class="sidebar-toggle-btn" title="باز/بسته کردن منو">
+                            ☰
+                        </button>
+
+                        <div class="ai-profile">
+                            <div class="ai-avatar">🤖</div>
+                            <div>
+                                <h3 id="active-chat-title">Amir AI</h3>
+                                <small>دستیار هوشمند آنلاین</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="clear-chat-btn" class="clear-chat-btn" title="پاک کردن گفتگو">
+                        🗑️
+                    </button>
+                </header>
+
+                <!-- MESSAGES -->
+                <div id="chat-messages" class="chat-messages">
+                    <!-- پیام خوش‌آمدگویی اولیه -->
+                    <div class="chat-bubble ai-bubble">
+                        سلام! من Amir AI هستم. چطور می‌توانم در کدنویسی، طراحی یا پروژه‌تان به شما کمک کنم؟ ✨
+                    </div>
+                </div>
+
+                <!-- CHAT INPUT AREA -->
+                <div class="chat-input-wrapper">
+                    <div class="chat-input-area">
+                        <button class="plus-btn" title="افزودن فایل">+ Attach</button>
+                        <input type="text" id="chat-input" placeholder="از Amir AI سوالی بپرسید یا کدی بخواهید...">
+                        <button id="chat-send" class="send-btn-arrow">↑</button>
+                    </div>
+
+                    <!-- QUICK ACTION CHIPS -->
+                    <div class="quick-chips">
+                        <button class="chip-btn">🔗 Connect a Repo</button>
+                        <button class="chip-btn">🎨 Figma Import</button>
+                        <button class="chip-btn">⚡ MCP Servers</button>
+                        <button class="chip-btn">🧩 Get Extension</button>
+                    </div>
+                </div>
+
+            </main>
+
+        </div>
+    </section>
+
+    <!-- JAVASCRIPT -->
+    <script src="ai.js"></script>
+
+    <script>
+        // مدیریت باز و بسته شدن منوی تاریخچه (ChatGPT Style)
+        const toggleSidebarBtn = document.getElementById("toggle-sidebar-btn");
+        const chatSidebar = document.getElementById("chat-sidebar");
+
+        if (toggleSidebarBtn && chatSidebar) {
+            toggleSidebarBtn.addEventListener("click", () => {
+                chatSidebar.classList.toggle("collapsed");
+            });
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amir AI - هوش مصنوعی</title>
+    <link rel="stylesheet" href="style.css?v=52">
+</head>
+
+<body class="ai-dark-page">
+
+    <!-- گوی‌های نورانی پس‌زمینه -->
+    <div class="glow-sphere sphere-1"></div>
+    <div class="glow-sphere sphere-2"></div>
+
+    <!-- نوار اطلاع‌رسانی بالای سایت (Top Banner) -->
+    <div class="top-banner">
+        <span>ثبت‌نام کنید: نسل جدید چت و ساخت پروژه‌ها با Amir AI ←</span>
+    </div>
+
+    <!-- NAVBAR (منوی اصلی) -->
+    <nav class="ai-nav">
+        <div class="logo">
+            <span class="logo-icon"></span>
+            Amir AI
+        </div>
+
+        <ul class="menu">
+            <li><a href="index.html">خانه</a></li>
+            <li><a href="ai.html" class="active">هوش مصنوعی</a></li>
+            <li><a href="weather.html">آب و هوا</a></li>
+        </ul>
+
+        <div class="nav-controls">
+            <button id="lang-toggle" title="تغییر زبان">🌐</button>
+            <button id="theme-toggle" title="تغییر تم">🌙</button>
+            <a href="chat.html" class="btn-primary-sm">ورود / ثبت‌نام</a>
+        </div>
+    </nav>
+
+    <!-- AI MAIN -->
+    <section class="ai-page futuristic-ai">
+
+        <!-- ================= HERO SECTION WITH BG IMAGE ================= -->
+        <!-- دکمه مرکزی که با کلیک روی آن مستقیم وارد صفحه chat.html می‌شود -->
+        <div class="ai-hero-landing">
+            <div class="hero-center-action">
+                <a href="chat.html" id="start-ai-btn" class="generating-glow-btn">
+                    <span class="sparkle-icon">✨</span>
+                    <span>Generating...</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- AI INTRO (معرفی کوتاه) -->
+        <div class="ai-intro">
+            <div class="ai-badge">
+                <span class="status-dot"></span>
+                THE AI AGENT FOR DESIGN & CODE
+            </div>
+
+            <h1 class="ai-title">
+                دستیار <span class="highlight-text">Amir AI</span> برای پروژه‌های واقعی
+            </h1>
+
+            <p class="ai-subtitle">
+                هوش مصنوعی نسل آینده برای طراحی، کدنویسی و یادگیری سریع
+            </p>
+        </div>
+
+    </section>
+
+    <!-- JAVASCRIPT -->
+    <script src="ai.js"></script>
+
+    <script>
+        // افکت چشمک زدن وضعیت آنلاین
+        const statusDot = document.querySelectorAll(".status-dot");
+        statusDot.forEach(dot => {
+            setInterval(() => {
+                dot.classList.toggle("pulse");
+            }, 1500);
+        });
+    </script>
+
+</body>
+
+</html>
