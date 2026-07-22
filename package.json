@@ -1,0 +1,21 @@
+{
+  "name": "acinsta630-pixel-github-io",
+  "version": "1.0.0",
+  "description": "Amir AI - Persian AI chatbot and personal portfolio website",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static HTML site - no build step required'",
+    "dev": "echo 'Use a local server to test. Try: python3 -m http.server 8000'"
+  },
+  "keywords": [
+    "ai",
+    "chatbot",
+    "portfolio",
+    "persian"
+  ],
+  "author": "Amir",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
