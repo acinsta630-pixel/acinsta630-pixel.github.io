@@ -1,0 +1,531 @@
+/* =================================
+   AMIR MODERN GLASS HOME & WEATHER
+   DARK GRAY & WHITE GLASSMorphism + NEON
+================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #121519;
+    color: #ffffff;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* نورهای ملایم پس‌زمینه */
+body::before {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    top: -200px;
+    right: -150px;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.06),
+        transparent 70%
+    );
+    filter: blur(80px);
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    bottom: -200px;
+    left: -150px;
+    background: radial-gradient(
+        circle,
+        rgba(160, 174, 192, 0.05),
+        transparent 70%
+    );
+    filter: blur(90px);
+    z-index: -1;
+}
+
+/* NAVBAR - شیشه‌ای مات و کامل گرد */
+nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1100px;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(22, 25, 30, 0.45);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+}
+
+.menu a {
+    color: #9ca3af;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.menu a:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+#lang-toggle, #theme-toggle {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#lang-toggle:hover, #theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* HERO SECTION */
+.hero {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 150px;
+    padding-bottom: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.hero-text {
+    max-width: 600px;
+}
+
+.hero-text h3 {
+    color: #9ca3af;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.hero-text h1 {
+    font-size: 64px;
+    margin: 15px 0;
+    color: #ffffff;
+}
+
+.hero-text h1 span {
+    background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-text h2 {
+    color: #e2e8f0;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.hero-text p {
+    margin: 20px 0 30px;
+    color: #9ca3af;
+    line-height: 1.8;
+    font-size: 17px;
+}
+
+/* دکمه‌های شیشه‌ای مات */
+.hero-text button,
+.project-btn {
+    padding: 14px 32px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.hero-text button:hover,
+.project-btn:hover {
+    transform: translateY(-3px);
+    background: #ffffff;
+    color: #121519;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+/* IMAGE CONTAINER */
+.hero-image {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 32px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.profile-img {
+    width: 320px;
+    display: block;
+    border-radius: 22px;
+    transition: transform 0.4s ease;
+}
+
+.hero-image:hover .profile-img {
+    transform: scale(1.02);
+}
+
+/* PROJECTS SECTION */
+.projects {
+    width: 90%;
+    max-width: 1200px;
+    margin: 60px auto 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 50px;
+    color: #ffffff;
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+/* کارت‌های پروژه به سبک شیشه‌ای + افکت نئونی موقع هاور */
+.project-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                box-shadow 0.4s ease, 
+                border-color 0.4s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(168, 85, 247, 0.6);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.35),
+                0 0 50px rgba(59, 130, 246, 0.2);
+}
+
+.project-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.project-info {
+    padding: 22px;
+}
+
+.project-info h3 {
+    color: #ffffff;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.project-info p {
+    color: #9ca3af;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.project-tags span {
+    display: inline-block;
+    margin: 15px 6px 15px 0;
+    padding: 5px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #d1d5db;
+    font-size: 13px;
+}
+
+/* SKILLS SECTION */
+.skills-section {
+    width: 90%;
+    max-width: 1200px;
+    margin: 80px auto 0;
+}
+
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.skill-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 30px 20px;
+    text-align: center;
+    transition: all 0.4s ease;
+}
+
+.skill-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(96, 165, 250, 0.5);
+    box-shadow: 0 0 30px rgba(96, 165, 250, 0.25);
+}
+
+.skill-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.skill-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.skill-card p {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.skill-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.skill-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #a855f7, #3b82f6);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+/* =================================
+   WEATHER PAGE GLASSMorphism STYLE
+================================= */
+
+.weather-page {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 140px;
+    padding-bottom: 60px;
+}
+
+.weather-container {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 32px;
+    padding: 35px 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* باکس اینپوت و دکمه جستجو */
+.weather-input-box {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.weather-input-box input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 14px 22px;
+    color: #ffffff;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.weather-input-box input:focus {
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.weather-input-box button {
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.weather-input-box button:hover {
+    background: #ffffff;
+    color: #121519;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* کارت نتیجه وضعیت آب و هوا */
+.weather-result {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.weather-result h2 {
+    font-size: 26px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.weather-temp {
+    font-size: 52px;
+    font-weight: 800;
+    margin: 15px 0;
+    background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.weather-desc {
+    font-size: 22px;
+    color: #d1d5db;
+    margin-bottom: 20px;
+}
+
+.weather-extra {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 15px;
+    color: #9ca3af;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* باکس پیغام خطا */
+.error-msg {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    padding: 15px 20px;
+    border-radius: 16px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* کلاس پنهان‌سازی */
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* FOOTER */
+footer {
+    margin-top: 100px;
+    padding: 30px;
+    text-align: center;
+    color: #6b7280;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 120px;
+    }
+
+    .hero-text h1 {
+        font-size: 42px;
+    }
+
+    .profile-img {
+        width: 260px;
+    }
+
+    .projects-container,
+    .skills-container {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        width: 95%;
+        padding: 10px 20px;
+    }
+    
+    .menu {
+        gap: 0;
+    }
+    
+    .menu a {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .weather-input-box {
+        flex-direction: column;
+    }
+    
+    .weather-temp {
+        font-size: 40px;
+    }
+}
