@@ -1,0 +1,391 @@
+*{ margin:0; padding:0; box-sizing:border-box; }
+body{ background:#0f172a; color:white; font-family:Tahoma,Arial,sans-serif; overflow-x: hidden; }
+
+/* NAVBAR */
+nav{ width:100%; background:rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); display:flex; justify-content:space-between; align-items:center; padding:20px 60px; position: relative; z-index: 10; }
+.logo{ font-size:30px; font-weight:bold; color:#38bdf8; }
+.menu{ list-style: none; display: flex; }
+.menu a{ color:white; text-decoration:none; margin-right:25px; transition:.3s; }
+.menu a:hover{ color:#38bdf8; }
+.nav-controls{ display: flex; align-items: center; }
+
+/* HERO (صفحه اصلی) */
+.hero{ width:90%; max-width:1200px; margin:70px auto; display:flex; justify-content:space-between; align-items:center; gap:60px; position: relative; z-index: 5; }
+.hero-text{ width:50%; }
+.hero-text h3{ color:#38bdf8; font-size:25px; }
+.hero-text h1{ margin-top:15px; font-size:65px; }
+.hero-text span{ color:#38bdf8; }
+.hero-text h2{ margin-top:10px; color:#94a3b8; }
+.hero-text p{ margin-top:30px; line-height:35px; color:#d1d5db; font-size:19px; }
+.hero-image{ width:50%; text-align:center; }
+.profile-img{ width: 350px; border-radius: 30px; border: none; transition: 0.5s; mix-blend-mode: screen; filter: drop-shadow(0 0 30px rgba(56, 189, 248, 0.6)); }
+.profile-img:hover{ transform: scale(1.1) rotate(3deg); filter: drop-shadow(0 0 50px rgba(236, 72, 153, 0.8)); }
+
+/* BUTTON */
+button{ margin-top:40px; padding:15px 45px; border:none; border-radius:40px; font-size:18px; cursor:pointer; color:white; background:linear-gradient(45deg,#38bdf8,#ec4899); transition:.4s; }
+button:hover{ transform:scale(1.08); box-shadow:0 0 30px #38bdf8; }
+
+/* FOOTER */
+footer{ margin-top:100px; background:rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); padding:35px; text-align:center; position: relative; z-index: 10; }
+
+/* بک‌گراند متحرک */
+.bg-animation{ position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+.blob{ position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: float 12s infinite ease-in-out; }
+.blob-1{ width: 400px; height: 400px; background: #38bdf8; top: -100px; right: -100px; }
+.blob-2{ width: 350px; height: 350px; background: #ec4899; bottom: -50px; left: -50px; animation-delay: 4s; }
+.blob-3{ width: 300px; height: 300px; background: #8b5cf6; top: 40%; left: 40%; animation-delay: 8s; }
+@keyframes float{ 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } }
+
+/* پروژه‌ها */
+.projects{ width: 90%; max-width: 1200px; margin: 100px auto; position: relative; z-index: 5; }
+.section-title{ text-align: center; font-size: 40px; margin-bottom: 50px; color: white; }
+.section-title::after{ content: ''; display: block; width: 80px; height: 4px; background: linear-gradient(45deg, #38bdf8, #ec4899); margin: 15px auto 0; border-radius: 2px; }
+.projects-container{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.project-card{ background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; overflow: hidden; transition: all 0.4s ease; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+.project-card:hover{ transform: translateY(-15px); box-shadow: 0 20px 40px rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.5); }
+.project-card img{ width: 100%; height: 220px; object-fit: cover; transition: transform 0.5s ease; }
+.project-card:hover img{ transform: scale(1.1); }
+.project-info{ padding: 20px; }
+.project-info h3{ font-size: 22px; margin-bottom: 10px; color: white; }
+.project-info p{ color: #cbd5e1; font-size: 16px; line-height: 1.6; margin-bottom: 15px; }
+.project-tags{ display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+.project-tags span{ background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 5px 12px; border-radius: 15px; font-size: 13px; border: 1px solid rgba(56, 189, 248, 0.2); }
+.project-btn{ display: inline-block; text-decoration: none; color: white; background: linear-gradient(45deg, #38bdf8, #ec4899); padding: 10px 25px; border-radius: 25px; font-weight: bold; transition: 0.3s; }
+.project-btn:hover{ box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); transform: scale(1.05); }
+
+/* انیمیشن اسکرول */
+.reveal{ opacity: 0; transform: translateY(50px); transition: all 1s ease; }
+.reveal.active{ opacity: 1; transform: translateY(0); }
+.project-card.reveal{ transition-delay: 0.2s; }
+
+/* دکمه‌های تغییر تم و زبان */
+#theme-toggle, #lang-toggle{ background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: white; font-size: 20px; cursor: pointer; padding: 5px 12px; border-radius: 50%; margin-right: 10px; transition: 0.3s; }
+#theme-toggle:hover, #lang-toggle:hover{ background: rgba(56, 189, 248, 0.2); }
+
+/* حالت روشن (صفحات اصلی) */
+body.light-mode{ background: #f1f5f9; color: #1e293b; }
+body.light-mode h1, body.light-mode h2, body.light-mode h3, body.light-mode .section-title{ color: #0f172a; }
+body.light-mode .hero-text h2{ color: #475569; }
+body.light-mode .logo{ color: #0284c7; }
+body.light-mode nav, body.light-mode footer{ background: rgba(226, 232, 240, 0.8); }
+body.light-mode .menu a{ color: #1e293b; }
+body.light-mode .menu a:hover{ color: #0284c7; }
+body.light-mode .hero-text p, body.light-mode .project-info p{ color: #475569; }
+body.light-mode .project-card{ background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); }
+body.light-mode .project-tags span{ background: rgba(2, 132, 199, 0.1); color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.2); }
+body.light-mode .blob{ opacity: 0.3; }
+
+/* ریسپانسیو موبایل (صفحات اصلی) */
+@media (max-width: 768px){
+    nav{ flex-direction: column; gap: 15px; padding: 20px; }
+    .hero{ flex-direction: column-reverse; text-align: center; gap: 40px; margin-top: 40px; }
+    .hero-text, .hero-image{ width: 100%; }
+    .hero-text h1{ font-size: 45px; }
+    .profile-img{ width: 250px; }
+    .section-title{ font-size: 30px; }
+}
+@media (max-width: 480px){
+    .hero-text h1{ font-size: 35px; }
+    .hero-text p{ font-size: 16px; }
+    .menu{ flex-wrap: wrap; justify-content: center; }
+    .menu a{ margin: 5px 10px; font-size: 14px; }
+    .nav-controls{ flex-direction: column; gap: 10px; }
+    #theme-toggle, #lang-toggle{ margin-right: 0; }
+}
+
+/* صفحه آب و هوا */
+.weather-container{ width: 100%; max-width: 600px; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center; margin-top: 30px; }
+.weather-input-box{ display: flex; gap: 10px; margin-bottom: 30px; }
+#city-input{ flex: 1; padding: 15px 20px; border: none; border-radius: 30px; background: rgba(255,255,255,0.1); color: white; font-size: 16px; outline: none; font-family: Tahoma, sans-serif; }
+#get-weather-btn{ padding: 15px 25px; margin: 0; white-space: nowrap; }
+.weather-result{ animation: fadeIn 0.5s ease; }
+#city-name{ font-size: 28px; color: #38bdf8; margin-bottom: 10px; }
+.weather-temp{ font-size: 60px; font-weight: bold; background: linear-gradient(45deg, #38bdf8, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 20px 0; }
+.weather-desc{ font-size: 24px; margin-bottom: 20px; }
+.weather-extra{ display: flex; justify-content: center; gap: 20px; font-size: 16px; color: #cbd5e1; }
+.error-msg{ color: #ec4899; font-size: 18px; margin-top: 20px; }
+.hidden{ display: none; }
+@keyframes fadeIn{ from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+body.light-mode .weather-container{ background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0,0,0,0.1); }
+body.light-mode #city-input{ background: #f1f5f9; color: #0f172a; }
+body.light-mode #city-name{ color: #0284c7; }
+body.light-mode .weather-extra{ color: #475569; }
+@media (max-width: 768px){ .weather-container{ padding: 20px; } .weather-input-box{ flex-direction: column; } .weather-temp{ font-size: 45px; } }
+
+/*================ صفحه هوش مصنوعی (ai.html) ================*/
+body.ai-dark-page{ background: #0a0a0a !important; color: #fff; }
+body.ai-dark-page .bg-animation{ display: none !important; }
+body.ai-dark-page nav{ background: #000 !important; border-bottom: 1px solid #1a1a1a !important; }
+body.ai-dark-page .menu a{ color: #888 !important; }
+body.ai-dark-page .menu a:hover{ color: #fff !important; }
+body.ai-dark-page .logo{ color: #fff !important; }
+body.ai-dark-page #theme-toggle, body.ai-dark-page #lang-toggle{ border: 1px solid #333 !important; color: #fff !important; }
+
+.ai-page{ width: 100%; max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 5; display: flex; flex-direction: column; align-items: center; }
+
+/* 🌟 صفحه ورود به سبک Builder.io */
+.auth-gate.builder-style { width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.ai-hero-title { font-size: 42px; font-weight: 800; background: linear-gradient(45deg, #a855f7, #3b82f6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
+.ai-hero-subtitle { color: #94a3b8; font-size: 16px; margin-bottom: 40px; max-width: 500px; }
+
+.central-prompt-box { width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 24px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.central-input { width: 100%; padding: 15px; margin-bottom: 15px; background: #000; border: 1px solid #333; border-radius: 12px; color: #fff; font-family: Tahoma, sans-serif; outline: none; transition: 0.3s; box-sizing: border-box; }
+.central-input:focus { border-color: #a855f7; }
+.central-send-btn { width: 100%; padding: 12px; background: linear-gradient(45deg, #a855f7, #3b82f6); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 5px; }
+.central-send-btn:hover { filter: brightness(1.2); }
+
+.action-pills { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+.action-pills button { background: #1a1a1a; border: 1px solid #333; color: #cbd5e1; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: 0.3s; margin: 0; }
+.action-pills button:hover { background: #222; border-color: #a855f7; }
+
+.bottom-features-row { margin-top: 60px; width: 100%; border-top: 1px solid #1a1a1a; padding-top: 30px; }
+.bottom-features-title { color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 15px; }
+.feature-logos { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+.feature-logos span { color: #888; font-weight: bold; font-size: 14px; opacity: 0.7; transition: 0.3s; }
+.feature-logos span:hover { opacity: 1; color: #fff; }
+
+/* فضای کار چت */
+.chat-workspace{ width: 100%; display: flex; gap: 20px; height: 75vh; }
+.chat-sidebar{ width: 260px; background: #111; border: 1px solid #1a1a1a; border-radius: 16px; padding: 15px; overflow-y: auto; flex-shrink: 0; }
+#new-chat-btn{ width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 12px; cursor: pointer; margin-bottom: 15px; transition: 0.3s; font-family: Tahoma, sans-serif; font-weight: bold; font-size: 14px; }
+#new-chat-btn:hover{ background: #222; }
+#chat-list{ list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+#chat-list li{ display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; cursor: pointer; transition: 0.3s; background: transparent; }
+#chat-list li:hover{ background: #1a1a1a; }
+#chat-list li.active{ background: #1a1a1a; border: 1px solid #333; }
+.chat-title{ flex: 1; font-size: 13px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-left: 8px; }
+.chat-actions{ opacity: 0; transition: 0.3s; display: flex; gap: 5px; }
+#chat-list li:hover .chat-actions{ opacity: 1; }
+.act-btn{ background: transparent !important; border: none !important; padding: 2px 4px !important; font-size: 12px !important; margin: 0 !important; cursor: pointer; color: #555; }
+
+.ai-chat-container{ flex: 1; margin: 0; width: 100%; height: 100%; background: #111; border: 1px solid #1a1a1a; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; }
+.ai-chat-container .chat-header{ background: transparent; border-bottom: 1px solid #1a1a1a; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+.ai-chat-container .chat-header h3{ font-weight: 500; color: #fff; font-size: 18px; }
+.ai-chat-container .chat-messages{ flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+
+/* پیام‌ها */
+.message{ max-width: 80%; padding: 15px 20px; border-radius: 16px; font-size: 15px; line-height: 1.6; }
+.message.user{ background: #1a1a1a; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+.message.bot{ background: #000; border: 1px solid #1a1a1a; color: #ccc; align-self: flex-start; border-bottom-left-radius: 2px; }
+
+/* کادر تایپ یکپارچه */
+.chat-input-area{ padding: 15px; border-top: 1px solid #1a1a1a; background: transparent; display: flex; align-items: center; gap: 10px; }
+.unified-input{ background: #1a1a1a !important; border: 1px solid #333 !important; border-radius: 24px !important; padding: 8px !important; }
+.plus-btn{ width: 36px; height: 36px; background: transparent; border: 1px solid #333; color: #cbd5e1; border-radius: 50%; font-size: 20px; cursor: pointer; flex-shrink: 0; margin: 0 !important; padding: 0 !important; }
+.plus-btn:hover{ background: #222; color: #fff; }
+#chat-input{ flex: 1; background: transparent !important; border: none !important; color: #fff !important; padding: 10px !important; outline: none; font-family: Tahoma, sans-serif; }
+.send-btn-arrow{ width: 36px; height: 36px; background: linear-gradient(45deg, #a855f7, #3b82f6) !important; color: white !important; border: none !important; border-radius: 50% !important; font-size: 18px !important; cursor: pointer; flex-shrink: 0; padding: 0 !important; margin: 0 !important; }
+.send-btn-arrow:hover{ filter: brightness(1.2); }
+#clear-chat-btn{ background: transparent; border: 1px solid #1a1a1a; color: #555; padding: 8px 12px; border-radius: 50%; cursor: pointer; font-size: 14px; flex-shrink: 0; margin: 0 !important; }
+#clear-chat-btn:hover{ color: #fff; border-color: #333; }
+
+/* حالت روشن صفحه هوش مصنوعی */
+body.light-mode.ai-dark-page{ background: #f1f5f9 !important; }
+body.light-mode.ai-dark-page nav{ background: #fff !important; border-bottom: 1px solid #e2e8f0 !important; }
+body.light-mode.ai-dark-page .menu a, body.light-mode.ai-dark-page .logo{ color: #0f172a !important; }
+body.light-mode .ai-hero-title{ background: linear-gradient(45deg, #6b21a8, #2563eb, #db2777); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+body.light-mode .ai-hero-subtitle{ color: #475569; }
+body.light-mode .central-prompt-box{ background: #fff; border: 1px solid #e2e8f0; }
+body.light-mode .central-input{ background: #f1f5f9; border: 1px solid #e2e8f0; color: #0f172a; }
+body.light-mode .action-pills button{ background: #fff; border: 1px solid #e2e8f0; color: #475569; }
+body.light-mode .bottom-features-row{ border-top: 1px solid #e2e8f0; }
+body.light-mode .chat-sidebar, body.light-mode .ai-chat-container{ background: #fff; border: 1px solid #e2e8f0; }
+body.light-mode #new-chat-btn{ background: #f1f5f9; color: #0f172a; border: 1px solid #e2e8f0; }
+body.light-mode #chat-list li:hover, body.light-mode #chat-list li.active{ background: #f1f5f9; }
+body.light-mode .chat-title{ color: #0f172a; }
+body.light-mode .message.user{ background: #f1f5f9; color: #0f172a; }
+body.light-mode .message.bot{ background: #fff; border: 1px solid #e2e8f0; color: #0f172a; }
+body.light-mode .unified-input{ background: #fff !important; border: 1px solid #e2e8f0 !important; }
+body.light-mode .plus-btn{ background: transparent; border-color: #e2e8f0; color: #475569; }
+body.light-mode #chat-input{ color: #0f172a !important; }
+body.light-mode #clear-chat-btn{ color: #475569; border-color: #e2e8f0; }
+
+/* ریسپانسیو موبایل */
+@media (max-width: 768px) {
+    .ai-hero-title { font-size: 28px; }
+    .ai-hero-subtitle { font-size: 14px; }
+    .feature-logos { gap: 20px; }
+    .chat-workspace { flex-direction: column; height: 85vh; }
+    .chat-sidebar { width: 100%; height: 140px; padding: 10px; }
+    #chat-list { flex-direction: column; overflow-y: auto; }
+    #chat-list li { width: 100%; padding: 6px 10px; }
+    .chat-actions { opacity: 1; } /* تو موبایل همیشه دکمه‌ها دیده بشن */
+}
+/*================ استایل دقیق مشابه Builder.io ================*/
+body.ai-dark-page {
+    background: #080808 !important;
+    background-image: radial-gradient(circle at 50% 0%, rgba(88, 28, 135, 0.15) 0%, transparent 50%) !important;
+}
+
+.ai-page {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.builder-style {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+}
+
+.ai-hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.ai-hero-subtitle {
+    color: #71717a;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.builder-main-box {
+    width: 100%;
+    background: #121212;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.builder-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #27272a;
+    padding: 15px 10px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.builder-input:last-of-type { border-bottom: none; }
+.builder-input::placeholder { color: #52525b; }
+.builder-input:focus { border-bottom-color: #7c3aed; }
+
+.builder-action-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.builder-pill {
+    background: #1e1e1e;
+    border: 1px solid #27272a;
+    color: #a1a1aa;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    margin: 0 !important;
+    transition: 0.2s;
+}
+.builder-pill:hover { background: #27272a; color: #fff; }
+
+.builder-submit-btn {
+    margin-left: auto; /* می‌فرستتش سمت چپ کادر */
+    background: #7c3aed !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    cursor: pointer;
+    margin-top: 0 !important;
+    font-size: 14px !important;
+}
+.builder-submit-btn:hover { filter: brightness(1.2); }
+
+.builder-logos-row {
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    opacity: 0.3;
+}
+.builder-logos-row span {
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* باقی استایل‌های چت (اگه هستن نیازی نیست دوباره بذاری، ولی برای خیالت میذارم) */
+.chat-workspace{ width: 100%; display: flex; gap: 20px; height: 75vh; }
+.chat-sidebar{ width: 260px; background: #111; border: 1px solid #1a1a1a; border-radius: 16px; padding: 15px; overflow-y: auto; flex-shrink: 0; }
+#new-chat-btn{ width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 12px; cursor: pointer; margin-bottom: 15px; transition: 0.3s; font-family: Tahoma, sans-serif; font-weight: bold; font-size: 14px; }
+#new-chat-btn:hover{ background: #222; }
+#chat-list{ list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+#chat-list li{ display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; cursor: pointer; transition: 0.3s; background: transparent; }
+#chat-list li:hover{ background: #1a1a1a; }
+#chat-list li.active{ background: #1a1a1a; border: 1px solid #333; }
+.chat-title{ flex: 1; font-size: 13px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-left: 8px; }
+.chat-actions{ opacity: 0; transition: 0.3s; display: flex; gap: 5px; }
+#chat-list li:hover .chat-actions{ opacity: 1; }
+.act-btn{ background: transparent !important; border: none !important; padding: 2px 4px !important; font-size: 12px !important; margin: 0 !important; cursor: pointer; color: #555; }
+
+.ai-chat-container{ flex: 1; margin: 0; width: 100%; height: 100%; background: #111; border: 1px solid #1a1a1a; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; }
+.ai-chat-container .chat-header{ background: transparent; border-bottom: 1px solid #1a1a1a; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+.ai-chat-container .chat-header h3{ font-weight: 500; color: #fff; font-size: 18px; }
+.ai-chat-container .chat-messages{ flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+.message{ max-width: 80%; padding: 15px 20px; border-radius: 16px; font-size: 15px; line-height: 1.6; }
+.message.user{ background: #1a1a1a; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+.message.bot{ background: #000; border: 1px solid #1a1a1a; color: #ccc; align-self: flex-start; border-bottom-left-radius: 2px; }
+
+.chat-input-area{ padding: 15px; border-top: 1px solid #1a1a1a; background: transparent; display: flex; align-items: center; gap: 10px; }
+.unified-input{ background: #1a1a1a !important; border: 1px solid #333 !important; border-radius: 24px !important; padding: 8px !important; }
+.plus-btn{ width: 36px; height: 36px; background: transparent; border: 1px solid #333; color: #cbd5e1; border-radius: 50%; font-size: 20px; cursor: pointer; flex-shrink: 0; margin: 0 !important; padding: 0 !important; }
+.plus-btn:hover{ background: #222; color: #fff; }
+#chat-input{ flex: 1; background: transparent !important; border: none !important; color: #fff !important; padding: 10px !important; outline: none; font-family: Tahoma, sans-serif; }
+.send-btn-arrow{ width: 36px; height: 36px; background: linear-gradient(45deg, #a855f7, #3b82f6) !important; color: white !important; border: none !important; border-radius: 50% !important; font-size: 18px !important; cursor: pointer; flex-shrink: 0; padding: 0 !important; margin: 0 !important; }
+.send-btn-arrow:hover{ filter: brightness(1.2); }
+#clear-chat-btn{ background: transparent; border: 1px solid #1a1a1a; color: #555; padding: 8px 12px; border-radius: 50%; cursor: pointer; font-size: 14px; flex-shrink: 0; margin: 0 !important; }
+
+/* حالت روشن */
+body.light-mode.ai-dark-page{ background: #f1f5f9 !important; background-image: none !important; }
+body.light-mode.ai-dark-page nav{ background: #fff !important; border-bottom: 1px solid #e2e8f0 !important; }
+body.light-mode.ai-dark-page .menu a, body.light-mode.ai-dark-page .logo{ color: #0f172a !important; }
+body.light-mode .ai-hero-title{ color: #0f172a; }
+body.light-mode .ai-hero-subtitle{ color: #475569; }
+body.light-mode .builder-main-box{ background: #fff; border: 1px solid #e2e8f0; }
+body.light-mode .builder-input{ border-bottom-color: #e2e8f0; color: #0f172a; }
+body.light-mode .builder-pill{ background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
+body.light-mode .builder-logos-row span { color: #0f172a; }
+body.light-mode .chat-sidebar, body.light-mode .ai-chat-container{ background: #fff; border: 1px solid #e2e8f0; }
+body.light-mode #new-chat-btn{ background: #f1f5f9; color: #0f172a; border: 1px solid #e2e8f0; }
+body.light-mode #chat-list li:hover, body.light-mode #chat-list li.active{ background: #f1f5f9; }
+body.light-mode .chat-title{ color: #0f172a; }
+body.light-mode .message.user{ background: #f1f5f9; color: #0f172a; }
+body.light-mode .message.bot{ background: #fff; border: 1px solid #e2e8f0; color: #0f172a; }
+body.light-mode .unified-input{ background: #fff !important; border: 1px solid #e2e8f0 !important; }
+body.light-mode .plus-btn{ background: transparent; border-color: #e2e8f0; color: #475569; }
+body.light-mode #chat-input{ color: #0f172a !important; }
+body.light-mode #clear-chat-btn{ color: #475569; border-color: #e2e8f0; }
+
+/* ریسپانسیو موبایل */
+@media (max-width: 768px) {
+    .ai-hero-title { font-size: 32px; }
+    .builder-logos-row { gap: 20px; margin-top: 50px; }
+    .builder-submit-btn { margin-left: 0; width: 100%; margin-top: 10px !important; }
+    .chat-workspace { flex-direction: column; height: 85vh; }
+    .chat-sidebar { width: 100%; height: 140px; padding: 10px; }
+    #chat-list { flex-direction: column; overflow-y: auto; }
+    #chat-list li { width: 100%; padding: 6px 10px; }
+    .chat-actions { opacity: 1; }
+}
