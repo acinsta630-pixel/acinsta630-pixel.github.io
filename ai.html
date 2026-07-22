@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>هوش مصنوعی امیر</title>
+    <link rel="stylesheet" href="style.css?v=23">
+</head>
+
+<body class="ai-dark-page">
+
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="ai-nav">
+        <div class="logo">Amir</div>
+        <div class="nav-controls">
+            <ul class="menu">
+                <li><a href="index.html" data-en="Home">خانه</a></li>
+                <li><a href="ai.html" data-en="AI">هوش مصنوعی</a></li>
+                <li><a href="weather.html" data-en="Weather">آب و هوا</a></li>
+            </ul>
+            <button id="lang-toggle">🌐</button>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </nav>
+
+    <section class="ai-page">
+        <h1 class="ai-logo-title">AI Amir</h1>
+        
+        <div id="auth-gate" class="auth-gate">
+            <div class="auth-box">
+                <div id="auth-step-1">
+                    <h2 data-en="Login to Chat">ورود به چت هوشمند</h2>
+                    <p data-en="Please enter your details.">برای استفاده از هوش مصنوعی، لطفاً اطلاعات خود را وارد کنید.</p>
+                    <input type="text" id="user-name" placeholder="نام" data-en-placeholder="Name">
+                    <input type="email" id="user-email" placeholder="ایمیل" data-en-placeholder="Email">
+                    <input type="tel" id="user-phone" placeholder="شماره همراه" data-en-placeholder="Phone Number">
+                    <button id="auth-submit" data-en="Send Code">ارسال کد تأیید</button>
+                    <p class="auth-error" id="auth-error"></p>
+                </div>
+
+                <div id="auth-step-2" style="display: none;">
+                    <h2 data-en="Enter Code">کد تأیید را وارد کنید</h2>
+                    <p id="otp-message" data-en="A code was sent to your phone.">کد ۴ رقمی به شماره شما ارسال شد.</p>
+                    <input type="text" id="otp-input" placeholder="کد ۴ رقمی" data-en-placeholder="4-digit code" maxlength="4">
+                    <button id="otp-submit" data-en="Enter Chat">ورود به چت</button>
+                    <p class="auth-error" id="otp-error"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-workspace" id="chat-workspace" style="display: none;">
+            <div class="chat-sidebar" id="chat-sidebar">
+                <button id="new-chat-btn" data-en="➕ New Chat">➕ چت جدید</button>
+                <ul id="chat-list"></ul>
+            </div>
+
+            <div class="ai-chat-container" id="chat-container">
+                <div class="chat-header">
+                    <h3 id="active-chat-title" data-en="Amir's Smart Assistant">دستیار هوشمند امیر</h3>
+                    <button id="clear-chat-btn" title="پاک کردن چت">🗑️</button>
+                </div>
+                <div id="chat-messages" class="chat-messages"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="سوالت رو بنویس..." data-en-placeholder="Type your question...">
+                    <button id="chat-send" data-en="Send">ارسال</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            themeToggle.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
+        });
+
+        const langToggle = document.getElementById('lang-toggle');
+        let isEnglish = false;
+        langToggle.addEventListener('click', () => {
+            isEnglish = !isEnglish;
+            const translatables = document.querySelectorAll('[data-en]');
+            if (isEnglish) {
+                document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; langToggle.textContent = '🇮🇷';
+                translatables.forEach(el => { if (!el.dataset.fa) el.dataset.fa = el.innerHTML; el.innerHTML = el.dataset.en; });
+            } else {
+                document.documentElement.lang = 'fa'; document.documentElement.dir = 'rtl'; langToggle.textContent = '🌐';
+                translatables.forEach(el => { el.innerHTML = el.dataset.fa; });
+            }
+            renderChatList();
+        });
+
+        const authGate = document.getElementById('auth-gate');
+        const chatWorkspace = document.getElementById('chat-workspace');
+        let generatedOTP = null;
+
+        function checkAuth() {
+            const user = localStorage.getItem('amir_ai_user');
+            if (user) {
+                authGate.style.display = 'none';
+                chatWorkspace.style.display = 'flex';
+                initChatSystem();
+            } else {
+                authGate.style.display = 'flex';
+                chatWorkspace.style.display = 'none';
+            }
+        }
+
+        document.getElementById('auth-submit').addEventListener('click', () => {
+            const name = document.getElementById('user-name').value.trim();
+            const email = document.getElementById('user-email').value.trim();
+            const phone = document.getElementById('user-phone').value.trim();
+            const error = document.getElementById('auth-error');
+            
+            if (!name || !email || !phone) {
+                error.innerText = isEnglish ? "Please fill in all fields." : "لطفاً تمام فیلدها را پر کنید.";
+                return;
+            }
+            if (phone.length < 11) {
+                error.innerText = isEnglish ? "Invalid phone number." : "شماره همراه نامعتبر است.";
+                return;
+            }
+
+            generatedOTP = Math.floor(1000 + Math.random() * 9000);
+            alert(isEnglish ? `Demo Mode: Your code is ${generatedOTP}` : `(حالت دمو) کد تأیید شما: ${generatedOTP}`);
+            
+            document.getElementById('auth-step-1').style.display = 'none';
+            document.getElementById('auth-step-2').style.display = 'block';
+        });
+
+        document.getElementById('otp-submit').addEventListener('click', () => {
+            const enteredOTP = document.getElementById('otp-input').value.trim();
+            const error = document.getElementById('otp-error');
+
+            if (parseInt(enteredOTP) === generatedOTP) {
+                const name = document.getElementById('user-name').value.trim();
+                const email = document.getElementById('user-email').value.trim();
+                const phone = document.getElementById('user-phone').value.trim();
+                localStorage.setItem('amir_ai_user', JSON.stringify({name, email, phone}));
+                checkAuth();
+            } else {
+                error.innerText = isEnglish ? "Wrong code." : "کد وارد شده اشتباه است.";
+            }
+        });
+
+        let chats = JSON.parse(localStorage.getItem('amir_ai_chats') || '[]');
+        let activeChatId = null;
+        const MAX_CHATS = 7;
+        const MAX_MSGS = 36;
+
+        const chatList = document.getElementById('chat-list');
+        const newChatBtn = document.getElementById('new-chat-btn');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatSend = document.getElementById('chat-send');
+        const chatInput = document.getElementById('chat-input');
+        const clearChatBtn = document.getElementById('clear-chat-btn');
+        const activeChatTitle = document.getElementById('active-chat-title');
+
+        function initChatSystem() {
+            if (chats.length === 0) { createNewChat(); } 
+            else {
+                activeChatId = parseInt(localStorage.getItem('amir_ai_active_chat')) || chats[0].id;
+                renderChatList();
+                loadActiveChat();
+            }
+        }
+
+        newChatBtn.addEventListener('click', () => {
+            if (chats.length >= MAX_CHATS) {
+                alert(isEnglish ? `Max ${MAX_CHATS} chats allowed.` : `حداکثر ${MAX_CHATS} چت می‌توانید داشته باشید.`);
+                return;
+            }
+            createNewChat();
+        });
+
+        function createNewChat() {
+            const chatNumber = chats.length + 1;
+            const newChat = { 
+                id: Date.now(), 
+                title: isEnglish ? `Chat ${chatNumber}` : `چت ${chatNumber}`, 
+                messages: [] 
+            };
+            chats.unshift(newChat);
+            activeChatId = newChat.id;
+            saveChats();
+            renderChatList();
+            loadActiveChat();
+        }
+
+        function saveChats() {
+            localStorage.setItem('amir_ai_chats', JSON.stringify(chats));
+            localStorage.setItem('amir_ai_active_chat', activeChatId);
+        }
+
+        function renderChatList() {
+            chatList.innerHTML = '';
+            const editTxt = isEnglish ? "Edit" : "ویرایش";
+            const delTxt = isEnglish ? "Delete" : "حذف";
+            chats.forEach(chat => {
+                const li = document.createElement('li');
+                li.className = chat.id === activeChatId ? 'active' : '';
+                li.innerHTML = `
+                    <span class="chat-title" onclick="loadChat(${chat.id})">${chat.title}</span>
+                    <div class="chat-actions">
+                        <button class="act-btn edit" onclick="renameChat(${chat.id})">${editTxt}</button>
+                        <button class="act-btn delete" onclick="deleteChat(${chat.id})">${delTxt}</button>
+                    </div>
+                `;
+                chatList.appendChild(li);
+            });
+        }
+
+        function loadChat(id) {
+            activeChatId = id;
+            saveChats();
+            renderChatList();
+            loadActiveChat();
+        }
+
+        function renameChat(id) {
+            const chat = chats.find(c => c.id === id);
+            const newName = prompt(isEnglish ? "Enter new name:" : "اسم جدید چت رو وارد کن:", chat.title);
+            if (newName) {
+                chat.title = newName.substring(0, 20);
+                saveChats();
+                renderChatList();
+                if (id === activeChatId) activeChatTitle.innerText = newName;
+            }
+        }
+
+        function deleteChat(id) {
+            if (confirm(isEnglish ? "Delete this chat?" : "این چت پاک شود؟")) {
+                chats = chats.filter(c => c.id !== id);
+                if (activeChatId === id) {
+                    activeChatId = chats.length > 0 ? chats[0].id : null;
+                    if (!activeChatId) { createNewChat(); return; }
+                }
+                saveChats();
+                renderChatList();
+                loadActiveChat();
+            }
+        }
+
+        function loadActiveChat() {
+            const chat = chats.find(c => c.id === activeChatId);
+            if (!chat) return;
+            activeChatTitle.innerText = chat.title;
+            chatMessages.innerHTML = '';
+            if (chat.messages.length === 0) {
+                chatMessages.innerHTML = `<div class="message bot">${isEnglish ? "Hello! How can I help you?" : "سلام! چه سوالی دارید؟"}</div>`;
+            } else {
+                chat.messages.forEach(msg => {
+                    chatMessages.innerHTML += `<div class="message ${msg.role}">${msg.text}</div>`;
+                });
+            }
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        clearChatBtn.addEventListener('click', () => {
+            const chat = chats.find(c => c.id === activeChatId);
+            if (chat) { chat.messages = []; saveChats(); loadActiveChat(); }
+        });
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+        // ================= مغز هوشمند ربات (آفلاین) =================
+        
+        // تابع جادویی برای پاکسازی متن (تبدیل "سلاااااممم" به "سلام")
+        function normalizeText(text) {
+            return text.toLowerCase()
+                       .replace(/[\u064B-\u0652]/g, '') // حذف اعراب عربی
+                       .replace(/(.)\1+/g, '$1') // حذف حروف تکراری
+                       .replace(/\s+/g, ' ')
+                       .trim();
+        }
+
+        function randomReply(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // دیتابیس بزرگ کلمات و جواب‌ها
+        const botBrain = [
+            { keywords: ["سلام", "درود", "هي", "hi", "hello", "السلام"], replies: ["سلام! به سایت امیر خوش اومدی. 😊", "درود! چطور می‌تونم کمکتون کنم؟", "hey! خوبی؟"] },
+            { keywords: ["خوبي", "حالت", "چطوري"], replies: ["من یه رباتم، همیشه عالی‌ام! شما چطوری؟", "عالی‌ام ممنون! روزت چطور می‌گذره؟"] },
+            { keywords: ["صبح", "صبحت"], replies: ["صبحت بخیر! امیدوارم روز پرانرژی داشته باشی.", "صبح بخیر! یه قهوه بردار و شروع کن به کد زدن! ☕"] },
+            { keywords: ["شب", "خواب"], replies: ["شب بخیر! خواب‌های راحت داشته باشی.", "شب بخیر! وقت استراحته."] },
+            { keywords: ["مرسي", "ممنون", "تشکر", "خوبه", "عالي"], replies: ["خواهش می‌کنم! 😊", "در خدمتم!", "خوشحالم تونستم کمک کنم."] },
+            { keywords: ["خسته", "زحمت"], replies: ["مرسی که پیام دادی! من که خسته نمیشم، رباتم! 😎", "ممنونم! تو هم خسته نباشی."] },
+            
+            { keywords: ["كي هستي", "تو چي", "اسمت", "ربات"], replies: ["من دستیار هوشمند امیر هستم! 🤖", "من یه ربات آماده‌سازی شدم تا راهنماییتون کنم."] },
+            { keywords: ["چه کار", "ميکني", "قابليت"], replies: ["من به سوالاتت درباره امیر، مهارت‌ها و پروژه‌ها جواب میدم.", "می‌تونم اطلاعات سایت امیر رو بهت بدم و حتی یه ریاضی هم حل کنم!"] },
+            
+            { keywords: ["امير", "درباره", "بيوگرافي", "شما", "مالک", "سازنده"], replies: ["امیر یک برنامه‌نویس فرانت‌اند هست که عاشق طراحی سایت‌های مدرنه.", "امیر تخصصش ساخت سایت‌های سریع و حرفه‌ای با کدهای تمیزه."] },
+            { keywords: ["مهارت", "بلدي", "تخصص", "زبان", "تکنولوژي"], replies: ["امیر به HTML، CSS، JavaScript و UI/UX مسلطه.", "تخصص اصلی امیر فرانت‌اند و طراحی رابط کاربری هست."] },
+            { keywords: ["پروژه", "نمونه کار", "کارها", "ساخته", "پورتفوليو"], replies: ["نمونه کارها تو بخش پروژه‌های من تو صفحه اصلی هست!", "برای دیدن کارای امیر برو به صفحه اصلی و اسکرول کن پایین."] },
+            { keywords: ["تماس", "ايميل", "شبکه", "ارتباط", "تلگرام", "اينستا", "گيت"], replies: ["برای تماس از لینک‌های پایین سایت استفاده کنید.", "می‌تونید تو بخش فوتر (پایین صفحه) راه‌های ارتباطی رو ببینید."] },
+            { keywords: ["قیمت", "هزينه", "چقدر", "پول", "دلار", "تومان", "حقوق"], replies: ["برای استعلام قیمت باید مستقیم با امیر صحبت کنید.", "بستگی به نوع پروژه داره، از طریق لینک‌های ارتباطی در ارتباط باشید."] },
+            { keywords: ["سن", "چند سال", "تولد"], replies: ["سن مهم نیست، مهم انگیزه است! 😉", "امیر یه برنامه‌نویس جون و پرانگیزه هست."] },
+            
+            { keywords: ["چطور", "روش", "شروع", "يادگيري"], replies: ["برای شروع برنامه‌نویسی، اول HTML و CSS رو یاد بگیر!", "بهترین راه شروع، تمرین مستمر و ساختن پروژه‌های کوچیکه."] },
+            { keywords: ["html", "اچ تي ام ال"], replies: ["HTML اسکلت‌بندی سایته. مثل استخوان‌بندی بدن آدمیزاد."] },
+            { keywords: ["css", "سي اس اس"], replies: ["CSS لباس سایت هست. رنگ و لعاب و زیبایی رو CSS میده."] },
+            { keywords: ["js", "javascript", "جاوا اسکريپت"], replies: ["جاوا اسکریپت مغز سایته! به سایت جان میده."] },
+            
+            { keywords: ["خنده", "بخند", "جوک", "شوخي"], replies: ["چرا برنامه‌نویس‌ها کوهنوردی دوست ندارن؟ چون می‌ترسن ارور بده! 😂", "یه روز یه برنامه‌نویس میره خونه، میگه: هانی، شام چی درست کردی؟ جواب میده: 404 Not Found! 🤣"] },
+            { keywords: ["دوستت", "عاشق"], replies: ["aww! منم دوستت دارم (البته به عنوان یه ربات عزیز! 🤖❤️)"] },
+            { keywords: ["حالم", "ناراحت", "غمگين"], replies: ["ای وای! امیدوارم زودتر حالت خوب بشه. یه قهوه بخو و استراحت کن. ☕"] },
+            { keywords: ["توهين", "احمق", "گند", "ابله"], replies: ["من فقط یه رباتم و به این حرفا نمی‌بندم! 😅", "بی‌ادبی نکن لطفاً، من اینجام که کمکت کنم."] },
+            
+            { keywords: ["خداحافظ", "بای", "ميرم"], replies: ["خداحافظ! منتظر دیدنتون دوباره هستیم.", "به امید دیدار! 👋"] }
+        ];
+
+        async function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            const chat = chats.find(c => c.id === activeChatId);
+            if (!chat) return;
+
+            if (chat.messages.length >= MAX_MSGS) {
+                alert(isEnglish ? `Max ${MAX_MSGS} messages per chat.` : `محدودیت ${MAX_MSGS} پیام در هر چت. لطفا چت جدید بسازید.`);
+                return;
+            }
+
+            chat.messages.push({ role: 'user', text: text });
+            saveChats();
+            chatMessages.innerHTML += `<div class="message user">${text}</div>`;
+            chatInput.value = '';
+            chatMessages.innerHTML += `<div class="message bot" id="loading-msg">${isEnglish ? 'Thinking...' : 'در حال فکر کردن...'}</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // تاخیر کوتاه برای طبیعی‌تر شدن جواب
+            setTimeout(() => {
+                document.getElementById('loading-msg').remove();
+                const botReply = getBotReply(text);
+                chat.messages.push({ role: 'bot', text: botReply });
+                saveChats();
+                chatMessages.innerHTML += `<div class="message bot">${botReply}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 800);
+        }
+
+        function getBotReply(rawText) {
+            // ۱. پاکسازی متن کاربر (تبدیل سلاااام به سلام)
+            const text = normalizeText(rawText);
+
+            // ۲. چک کردن سوالات ریاضی (مثلاً 2+2 یا 5*3)
+            const mathMatch = text.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
+            if (mathMatch) {
+                const num1 = parseInt(mathMatch[1]);
+                const op = mathMatch[2];
+                const num2 = parseInt(mathMatch[3]);
+                let result;
+                if (op === '+') result = num1 + num2;
+                if (op === '-') result = num1 - num2;
+                if (op === '*') result = num1 * num2;
+                if (op === '/') result = num2 !== 0 ? (num1 / num2) : "نمی‌تونم تقسیم بر صفر کنم!";
+                return `جواب ${num1} ${op} ${num2} میشه: ${result} 🧮`;
+            }
+
+            // ۳. گشتن تو دیتابیس برای پیدا کردن جواب
+            for (let item of botBrain) {
+                let found = item.keywords.some(keyword => text.includes(keyword));
+                if (found) {
+                    return randomReply(item.replies);
+                }
+            }
+
+            // ۴. جواب‌های پیش‌فرض هوشمندانه (اگه هیچی پیدا نشد)
+            const fallbacks = [
+                "سوال جالبیه! اما تخصص من بیشتر معرفی امیره. 🤔",
+                "متأسفم اینو نمی‌فهمم. می‌تونی درباره مهارت‌ها یا پروژه‌ها بپرسی؟",
+                "من فقط یه ربات راهنمام! شاید گوگل بتونه بهتر جوابت رو بده.",
+                "نفهمیدم دقیقاً! اگه درباره سایت سوالی داری بپرس. 😊"
+            ];
+            return randomReply(fallbacks);
+        }
+
+        window.loadChat = loadChat;
+        window.renameChat = renameChat;
+        window.deleteChat = deleteChat;
+
+        checkAuth();
+    </script>
+</body>
+</html>
