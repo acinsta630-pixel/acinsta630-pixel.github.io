@@ -1,0 +1,335 @@
+/* =================================
+   AMIR MODERN GLASS HOME
+   DARK GRAY & WHITE GLASSMorphism
+================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* تم خاکستری تیره به جای آبی نوی */
+    background-color: #121519;
+    color: #ffffff;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* نورهای ملایم پس‌زمینه (سفید و خاکستری مات) */
+body::before {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    top: -200px;
+    right: -150px;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.06),
+        transparent 70%
+    );
+    filter: blur(80px);
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    bottom: -200px;
+    left: -150px;
+    background: radial-gradient(
+        circle,
+        rgba(160, 174, 192, 0.05),
+        transparent 70%
+    );
+    filter: blur(90px);
+    z-index: -1;
+}
+
+/* NAVBAR - شیشه‌ای مات و کامل گرد (مشابه تصویر نمونه) */
+nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1100px;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+
+    /* افکت شیشه‌ای مشکی/خاکستری شفاف */
+    background: rgba(22, 25, 30, 0.45);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    /* لبه گرد دکمه‌ای (مثل تصویر نمونه) و مرز نازک براق */
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+/* کنترل‌های منو و دکمه‌های داخل هدر */
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+}
+
+.menu a {
+    color: #9ca3af;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.menu a:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+#lang-toggle, #theme-toggle {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#lang-toggle:hover, #theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* HERO SECTION */
+.hero {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 150px;
+    padding-bottom: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.hero-text {
+    max-width: 600px;
+}
+
+.hero-text h3 {
+    color: #9ca3af;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.hero-text h1 {
+    font-size: 64px;
+    margin: 15px 0;
+    color: #ffffff;
+}
+
+/* رنگ اسم امیر (گرادینت سفید به خاکستری نقره‌ای) */
+.hero-text h1 span {
+    background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-text h2 {
+    color: #e2e8f0;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.hero-text p {
+    margin: 20px 0 30px;
+    color: #9ca3af;
+    line-height: 1.8;
+    font-size: 17px;
+}
+
+/* دکمه‌های شیشه‌ای مات */
+.hero-text button,
+.project-btn {
+    padding: 14px 32px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.hero-text button:hover,
+.project-btn:hover {
+    transform: translateY(-3px);
+    background: #ffffff;
+    color: #121519;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+/* IMAGE CONTAINER */
+.hero-image {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 32px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.profile-img {
+    width: 320px;
+    display: block;
+    border-radius: 22px;
+    transition: transform 0.4s ease;
+}
+
+.hero-image:hover .profile-img {
+    transform: scale(1.02);
+}
+
+/* PROJECTS SECTION */
+.projects {
+    width: 90%;
+    max-width: 1200px;
+    margin: 60px auto 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 50px;
+    color: #ffffff;
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+/* کارت‌های پروژه به سبک شیشه‌ای مات */
+.project-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.project-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.project-info {
+    padding: 22px;
+}
+
+.project-info h3 {
+    color: #ffffff;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.project-info p {
+    color: #9ca3af;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.project-tags span {
+    display: inline-block;
+    margin: 15px 6px 15px 0;
+    padding: 5px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #d1d5db;
+    font-size: 13px;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 100px;
+    padding: 30px;
+    text-align: center;
+    color: #6b7280;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 120px;
+    }
+
+    .hero-text h1 {
+        font-size: 42px;
+    }
+
+    .profile-img {
+        width: 260px;
+    }
+
+    .projects-container {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        width: 95%;
+        padding: 10px 20px;
+    }
+    
+    .menu {
+        gap: 0;
+    }
+    
+    .menu a {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+}
