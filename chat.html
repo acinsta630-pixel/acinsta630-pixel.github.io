@@ -37,7 +37,7 @@
     <section class="ai-page futuristic-ai">
         <div class="chat-workspace futuristic-chat" id="chat-workspace">
 
-            <!-- SIDEBAR (منوی کشویی تاریخچه - ChatGPT Style) -->
+            <!-- SIDEBAR (منوی کشویی تاریخچه) -->
             <aside class="chat-sidebar" id="chat-sidebar">
                 <button id="new-chat-btn" class="new-chat-btn">
                     ➕ چت جدید
@@ -78,13 +78,8 @@
                     </button>
                 </header>
 
-                <!-- MESSAGES -->
-                <div id="chat-messages" class="chat-messages">
-                    <!-- پیام خوش‌آمدگویی اولیه -->
-                    <div class="chat-bubble ai-bubble">
-                        سلام! من Amir AI هستم. چطور می‌توانم در کدنویسی، طراحی یا پروژه‌تان به شما کمک کنم؟ ✨
-                    </div>
-                </div>
+                <!-- MESSAGES (پیام ثابت حذف شد تا جاوااسکریپت کنترل کامل داشته باشه) -->
+                <div id="chat-messages" class="chat-messages"></div>
 
                 <!-- CHAT INPUT AREA -->
                 <div class="chat-input-wrapper">
@@ -112,13 +107,14 @@
     <script type="module" src="ai.js"></script>
 
     <script>
-        // مدیریت باز و بسته شدن منوی تاریخچه (ChatGPT Style)
+        // مدیریت باز و بسته شدن منوی تاریخچه
         const toggleSidebarBtn = document.getElementById("toggle-sidebar-btn");
         const chatSidebar = document.getElementById("chat-sidebar");
 
         if (toggleSidebarBtn && chatSidebar) {
             toggleSidebarBtn.addEventListener("click", () => {
                 chatSidebar.classList.toggle("collapsed");
+                chatSidebar.classList.toggle("open");
             });
         }
     </script>
