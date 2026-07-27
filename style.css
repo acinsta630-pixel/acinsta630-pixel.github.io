@@ -1,0 +1,567 @@
+/* ==========================================
+   AMIR AI FUTURISTIC & SPACE PORTFOLIO
+   STYLE.CSS - FULL MERGED & RESPONSIVE
+========================================== */
+
+/* RESET & BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #05050e;
+    color: white;
+    font-family: Tahoma, Arial, sans-serif;
+    overflow-x: hidden;
+    position: relative;
+    direction: rtl; /* برای چیدمان درست فارسی */
+}
+
+/* بوم ستاره‌های زنده فضایی */
+#space-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+}
+
+/* انیمیشن لایه‌های پس‌زمینه */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.25;
+    animation: blobFloat 10s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: #7c3aed;
+    top: -50px;
+    right: -50px;
+}
+
+.blob-2 {
+    width: 450px;
+    height: 450px;
+    background: #2563eb;
+    bottom: -100px;
+    left: -100px;
+    animation-delay: -4s;
+}
+
+.blob-3 {
+    width: 300px;
+    height: 300px;
+    background: #ec4899;
+    top: 40%;
+    left: 40%;
+    animation-delay: -7s;
+}
+
+@keyframes blobFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 40px) scale(1.1); }
+}
+
+/* ==================================
+   HEADER & NAVBAR (GLASSMORPHISM) - FIXED
+================================== */
+
+.glass-nav, .ai-nav {
+    position: fixed; /* فیکس شده در بالای صفحه */
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 10, 20, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 0 15px rgba(139, 92, 246, 0.8);
+    display: flex;
+    align-items: center;
+}
+
+.logo span {
+    color: #38bdf8;
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap; /* برای جلوگیری از بهم ریختگی در صفحه‌های کوچکتر */
+}
+
+.menu a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.menu a:hover, .menu a.active {
+    color: #38bdf8;
+    text-shadow: 0 0 12px #38bdf8;
+}
+
+/* ==================================
+   HERO SECTION (PORTFOLIO HOME)
+================================== */
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 140px 10% 80px; /* فاصله بیشتر از بالا برای منوی فیکس شده */
+    min-height: 100vh;
+    gap: 40px;
+}
+
+.hero-text {
+    flex: 1;
+    max-width: 600px;
+}
+
+.badge-space {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    color: #c084fc;
+    font-size: 13px;
+    margin-bottom: 18px;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+}
+
+.hero-text h3 {
+    font-size: 22px;
+    color: #cbd5e1;
+    margin-bottom: 10px;
+}
+
+.hero-text h1 {
+    font-size: 48px;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.hero-text h1 span {
+    color: #38bdf8;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+}
+
+.glow-text {
+    background: linear-gradient(90deg, #38bdf8, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    color: #94a3b8;
+    line-height: 1.8;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.btn-space {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    border-radius: 30px;
+    border: 1px solid rgba(168, 85, 247, 0.5);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.9), rgba(37, 99, 235, 0.9));
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 25px rgba(124, 58, 237, 0.5);
+}
+
+.btn-space:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 0 40px rgba(56, 189, 248, 0.8);
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.img-glow-wrapper {
+    position: relative;
+    border-radius: 30px;
+    padding: 8px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(56, 189, 248, 0.5));
+    box-shadow: 0 0 50px rgba(139, 92, 246, 0.4);
+    transition: 0.4s;
+}
+
+.img-glow-wrapper:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 70px rgba(56, 189, 248, 0.7);
+}
+
+/* اصلاح سایز تصویر به ابعاد خواسته شده */
+.profile-img {
+    width: 450px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 24px;
+    display: block;
+}
+
+/* ==================================
+   PROJECTS SECTION & CARDS
+================================== */
+
+.projects {
+    padding: 80px 10%;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    background: linear-gradient(90deg, #ffffff, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.project-filters {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 45px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 24px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    border-color: #38bdf8;
+    color: white;
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.6);
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    background: rgba(15, 15, 25, 0.75);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
+}
+
+.card-img-holder {
+    width: 100%;
+    height: 210px;
+    overflow: hidden;
+}
+
+.card-img-holder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.project-card:hover .card-img-holder img {
+    transform: scale(1.08);
+}
+
+.project-info {
+    padding: 22px;
+}
+
+.project-info h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.project-info p {
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.project-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.project-tags span {
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: #38bdf8;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.project-btn {
+    flex: 1;
+    text-align: center;
+    padding: 11px 18px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.project-btn:hover {
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+}
+
+/* ==================================
+   SKILLS SECTION
+================================== */
+
+.skills-section {
+    padding: 60px 10% 100px;
+}
+
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.skill-card {
+    background: rgba(15, 15, 25, 0.6);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 25px;
+    transition: 0.3s;
+}
+
+.skill-card:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+    transform: translateY(-5px);
+}
+
+.skill-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.skill-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.skill-card p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+
+.skill-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.skill-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+    border-radius: 10px;
+    box-shadow: 0 0 10px #8b5cf6;
+}
+
+/* ==================================
+   SCROLL REVEAL ANIMATION
+================================== */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==================================
+   FOOTER
+================================== */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: #64748b;
+    font-size: 14px;
+    background: rgba(5, 5, 15, 0.9);
+}
+
+/* ==================================
+   RESPONSIVE (MOBILE) - FIXED
+================================== */
+
+/* تبلت‌ها و لپ‌تاپ‌های کوچک */
+@media (max-width: 992px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 150px;
+        gap: 60px;
+    }
+
+    .hero-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* عکس در تبلت و موبایل به صورت خودکار مقیاس‌پذیر می‌شود تا به هم نریزد */
+    .profile-img {
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        aspect-ratio: 45 / 50; /* حفظ نسبت ابعاد 450x500 */
+    }
+}
+
+/* گوشی‌های موبایل */
+@media (max-width: 768px) {
+    .glass-nav, .ai-nav {
+        flex-direction: column;
+        padding: 15px 5%;
+        gap: 15px;
+        position: relative; /* در موبایل منو ثابت نباشد تا جای صفحه را نگیرد */
+    }
+
+    .menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .hero {
+        padding-top: 60px; /* چون منو ثابت نیست، پدینگ کمتر می‌شود */
+    }
+
+    .hero-text h1 {
+        font-size: 36px;
+    }
+
+    .glow-text {
+        font-size: 22px;
+    }
+
+    .projects-container {
+        grid-template-columns: 1fr;
+    }
+
+    .chat-workspace {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .chat-sidebar {
+        width: 100%;
+        max-height: 250px;
+    }
+
+    .ai-chat-container {
+        width: 100%;
+        height: 70vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-img {
+        max-width: 300px;
+    }
+    
+    .hero-text h1 {
+        font-size: 28px;
+    }
+}
