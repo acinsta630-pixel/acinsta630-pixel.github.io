@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAYRO // Amir AI Chat</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2300d2ff'/><stop offset='100%' stop-color='%233a7bd5'/></linearGradient></defs><rect width='100' height='100' rx='28' fill='%23080a0f'/><path d='M30 50 C 30 35, 45 30, 50 42 C 55 30, 70 35, 70 50 C 70 65, 55 70, 50 58 C 45 70, 30 65, 30 50 Z' fill='none' stroke='url(%23g)' stroke-width='8' stroke-linecap='round'/><circle cx='50' cy='50' r='5' fill='%2300d2ff'/></svg>">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #080a0f;
+            --panel-bg: rgba(22, 27, 38, 0.55);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 210, 255, 0.4);
+            --text-main: #f3f3f5;
+            --text-muted: #8b8b96;
+            --cyan-gradient: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 50% 20%, rgba(0, 210, 255, 0.07) 0px, transparent 60%),
+                radial-gradient(at 80% 90%, rgba(58, 123, 213, 0.05) 0px, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Header Navbar */
+        header {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(13, 17, 23, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 12px 24px;
+            backdrop-filter: blur(25px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .ai-core-icon {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.4));
+        }
+
+        /* Chat Messages Container */
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 40px 10px;
+            overflow-y: auto;
+            margin-bottom: 120px;
+        }
+
+        .chat-welcome {
+            text-align: center;
+            margin: auto 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-welcome h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .chat-welcome p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Bubbles */
+        .message {
+            display: flex;
+            gap: 14px;
+            max-width: 85%;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .message.user {
+            margin-left: auto;
+            flex-direction: row-reverse;
+        }
+
+        .message.user .msg-content {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-color);
+            border-radius: 20px 20px 4px 20px;
+            padding: 12px 18px;
+        }
+
+        .message.ai .msg-content {
+            background: transparent;
+            padding: 4px 0;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .avatar.ai-avatar {
+            background: var(--cyan-gradient);
+            color: #000;
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+        }
+
+        .avatar.user-avatar {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* 🚀 کادر ورودی چت اصلی (Floating Oval Bar) */
+        .chat-input-wrapper {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 720px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 35px; /* بیضی نرم */
+            padding: 8px 12px 8px 18px;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 210, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        /* تغییر حالت موقع فوکوس و تایپ */
+        .chat-input-wrapper:focus-within {
+            border-color: var(--border-glow);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 210, 255, 0.2);
+            border-radius: 28px;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            padding: 8px 0;
+            resize: none;
+            max-height: 120px;
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .action-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .send-btn {
+            background: var(--cyan-gradient);
+            color: #080a0f;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .send-btn:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+
+        /* Suggestion Chips فوقانی کادر چت */
+        .quick-prompts {
+            position: absolute;
+            top: -45px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chip {
+            background: rgba(13, 17, 23, 0.7);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            backdrop-filter: blur(15px);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            color: var(--text-main);
+            border-color: rgba(0, 210, 255, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header>
+        <div class="logo">
+            <svg class="ai-core-icon" viewBox="0 0 100 100">
+                <defs>
+                    <linearGradient id="aiGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00d2ff" />
+                        <stop offset="100%" stop-color="#3a7bd5" />
+                    </linearGradient>
+                </defs>
+                <rect width="100" height="100" rx="28" fill="#0d131f"/>
+                <rect width="100" height="100" rx="28" fill="none" stroke="#00d2ff" stroke-width="2" stroke-opacity="0.3"/>
+                <path d="M30 50 C 30 35, 45 30, 50 42 C 55 30, 70 35, 70 50 C 70 65, 55 70, 50 58 C 45 70, 30 65, 30 50 Z" fill="none" stroke="url(#aiGlow)" stroke-width="7" stroke-linecap="round"/>
+                <circle cx="50" cy="50" r="4" fill="#00d2ff"/>
+            </svg>
+            Rayro AI
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+            پشتیبانی‌شده توسط <span style="color: #00d2ff; font-weight: 600;">Gemini Core</span>
+        </div>
+    </header>
+
+    <!-- Chat Messages Container -->
+    <div class="chat-container" id="chatContainer">
+        
+        <div class="chat-welcome">
+            <h2>چطور می‌تونم کمکت کنم؟</h2>
+            <p>امروز روی چه پروژه‌ای داری کار می‌کنی؟ سوالت رو بپرس یا کدت رو بفرست.</p>
+        </div>
+
+        <!-- پیام نمونه هوش مصنوعی -->
+        <div class="message ai">
+            <div class="avatar ai-avatar"><i class="fa-solid fa-sparkles"></i></div>
+            <div class="msg-content">
+                سلام! من **Amir AI** هستم. آماده‌ام به سوالاتت جواب بدم یا توی برنامه **Rayro** راهنماییت کنم.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ⚡ کادر ورودی بیضی‌شکل و شناور پایین صفحه (مثل Gemini/ChatGPT) -->
+    <div class="chat-input-wrapper">
+        
+        <!-- پیشنهادهای سریع بالای کادر -->
+        <div class="quick-prompts">
+            <div class="chip" onclick="setInput('کدنویسی جاوااسکریپت')"><i class="fa-solid fa-code"></i> کدنویسی</div>
+            <div class="chip" onclick="setInput('خلاصه سازی متن')"><i class="fa-solid fa-wand-magic-sparkles"></i> ایده‌پردازی</div>
+        </div>
+
+        <button class="action-btn" title="آپلود فایل یا عکس">
+            <i class="fa-solid fa-paperclip"></i>
+        </button>
+
+        <input type="text" id="userInput" class="chat-input" placeholder="چیزی بنویسید..." onkeypress="handleKeyPress(event)">
+
+        <div class="input-actions">
+            <button class="action-btn" title="وویس">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <button class="send-btn" onclick="sendMessage()" title="ارسال پیام">
+                <i class="fa-solid fa-arrow-up" style="font-size: 0.95rem;"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function setInput(text) {
+            document.getElementById('userInput').value = text + ' ';
+            document.getElementById('userInput').focus();
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chatContainer = document.getElementById('chatContainer');
+
+            // مخفی کردن ولکام پیام
+            const welcome = document.querySelector('.chat-welcome');
+            if (welcome) welcome.style.display = 'none';
+
+            // افزودن پیام کاربر
+            const userMsg = `
+                <div class="message user">
+                    <div class="avatar user-avatar">U</div>
+                    <div class="msg-content">${text}</div>
+                </div>
+            `;
+            chatContainer.innerHTML += userMsg;
+
+            input.value = '';
+
+            // پاسخ فرضی هوش مصنوعی (در آینده به API وصل میشه)
+            setTimeout(() => {
+                const aiMsg = `
+                    <div class="message ai">
+                        <div class="avatar ai-avatar"><i class="fa-solid fa-sparkles"></i></div>
+                        <div class="msg-content">این یک پاسخ آزمایشی از طرف Amir AI است برای متن: "${text}"</div>
+                    </div>
+                `;
+                chatContainer.innerHTML += aiMsg;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 600);
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
