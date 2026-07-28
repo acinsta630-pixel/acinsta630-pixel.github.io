@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMIR CORE // OMNI-CYBER COMMAND MATRIX v100.0</title>
+
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Orbitron:wght@500;700;900&family=Vazirmatn:wght@300;500;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           CORE CYBERNETIC SYSTEM STYLES (AMIR COMMAND MATRIX)
+           ========================================================================== */
+        
+        :root {
+            --bg-void: #02040a;
+            --neon-cyan: #00f2fe;
+            --neon-blue: #4facfe;
+            --neon-purple: #7f00ff;
+            --neon-amber: #ffb703;
+            --neon-red: #ff0055;
+            --glass-bg: rgba(6, 11, 25, 0.75);
+            --glass-border: rgba(0, 242, 254, 0.25);
+            --font-code: 'Fira Code', monospace;
+            --font-space: 'Orbitron', sans-serif;
+            --font-ui: 'Vazirmatn', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: #f3f4f6;
+            font-family: var(--font-ui);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            direction: rtl;
+        }
+
+        /* WebGL Background Canvas */
+        #cyber-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+            background-size: 100% 4px;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Dynamic Cursor Laser Spotlight */
+        .spotlight {
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, rgba(127, 0, 255, 0.05) 50%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            filter: blur(40px);
+        }
+
+        /* --- Header / Navigation --- */
+        .cyber-header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 94%;
+            max-width: 1500px;
+            padding: 14px 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .brand-zone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-space);
+            font-weight: 900;
+            letter-spacing: 2px;
+            font-size: 1.1rem;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--neon-cyan);
+            color: #000;
+        }
+
+        .telemetry-bar {
+            display: flex;
+            gap: 30px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--neon-cyan);
+        }
+
+        .telemetry-bar span.val { color: #fff; font-weight: bold; }
+
+        .btn-group { display: flex; gap: 10px; }
+
+        .cyber-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 9px 18px;
+            border-radius: 50px;
+            font-family: var(--font-space);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cyber-btn:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 25px var(--neon-cyan);
+            transform: translateY(-2px);
+        }
+
+        /* --- Panels Architecture --- */
+        .panel {
+            position: fixed;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px;
+            z-index: 10;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        }
+
+        .panel-header {
+            font-family: var(--font-space);
+            font-size: 0.95rem;
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            padding-bottom: 10px;
+        }
+
+        /* Tactical Left Panel */
+        .panel-tactical { top: 100px; right: 30px; width: 340px; }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+        }
+
+        .stat-row .lbl { color: #9ca3af; }
+        .stat-row .val { color: var(--neon-cyan); font-weight: bold; }
+
+        /* Satellite Right Panel */
+        .panel-satellites { top: 100px; left: 30px; width: 340px; }
+
+        .card-node {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card-node:hover, .card-node.active {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 242, 254, 0.08);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+        }
+
+        .card-node h4 { font-family: var(--font-space); font-size: 0.85rem; display: flex; justify-content: space-between; }
+        .card-node p { font-family: var(--font-code); font-size: 0.75rem; color: #9ca3af; margin-top: 4px; }
+
+        /* Central Launch Button */
+        .center-action {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .btn-launch {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            color: #fff;
+            padding: 18px 45px;
+            border-radius: 100px;
+            font-family: var(--font-space);
+            font-size: 1.1rem;
+            font-weight: 900;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.5);
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-launch:hover {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 0 80px rgba(0, 242, 254, 0.9);
+            color: #000;
+        }
+
+        /* --- Cyber Terminal Drawer --- */
+        .terminal-drawer {
+            position: fixed;
+            bottom: -550px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            max-width: 1100px;
+            height: 450px;
+            background: rgba(2, 4, 10, 0.95);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 24px 24px 0 0;
+            z-index: 1000;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 -20px 80px rgba(0, 242, 254, 0.3);
+            transition: bottom 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-drawer.open { bottom: 0; }
+
+        .term-header {
+            padding: 14px 24px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-space);
+            color: var(--neon-cyan);
+        }
+
+        .term-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: #00f5d4;
+            line-height: 1.7;
+        }
+
+        .term-input-line {
+            padding: 14px 24px;
+            background: rgba(0,0,0,0.6);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .term-input-line input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: var(--font-code);
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        @media (max-width: 1050px) {
+            .panel-tactical, .panel-satellites, .telemetry-bar { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D Canvas & Visual Overlays -->
+    <canvas id="cyber-canvas"></canvas>
+    <div class="scanlines"></div>
+    <div class="spotlight" id="spotlight"></div>
+
+    <!-- Header Navigation -->
+    <header class="cyber-header">
+        <div class="brand-zone">
+            <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
+            <span>AMIR // CORE COMMAND</span>
+        </div>
+
+        <div class="telemetry-bar">
+            <div>CORE STATUS: <span class="val" style="color:var(--neon-cyan)">ONLINE</span></div>
+            <div>LATENCY: <span class="val" id="pingVal">3.2 ms</span></div>
+            <div>SECURITY: <span class="val" style="color:#00f5d4">ENCRYPTED</span></div>
+        </div>
+
+        <div class="btn-group">
+            <button class="cyber-btn" onclick="toggleAudio()"><i class="fa-solid fa-volume-high" id="audioIcon"></i> AUDIO SYNTH</button>
+            <button class="cyber-btn" onclick="toggleTerminal()"><i class="fa-solid fa-terminal"></i> TERMINAL >_</button>
+        </div>
+    </header>
+
+    <!-- Left Tactical Telemetry Panel -->
+    <div class="panel panel-tactical">
+        <div class="panel-header">
+            <span><i class="fa-solid fa-microchip"></i> SYSTEM METRICS</span>
+            <span style="font-size:0.7rem; color:var(--neon-amber)">v100.0</span>
+        </div>
+        <div class="stat-row"><span class="lbl">NEURAL LINK:</span><span class="val">ESTABLISHED</span></div>
+        <div class="stat-row"><span class="lbl">QUANTUM MATRIX:</span><span class="val">99.9%</span></div>
+        <div class="stat-row"><span class="lbl">FIREWALL:</span><span class="val" style="color:var(--neon-cyan)">ACTIVE</span></div>
+        <div class="stat-row"><span class="lbl">ENCRYPTION:</span><span class="val">AES-256-GCM</span></div>
+    </div>
+
+    <!-- Right Satellite Tracker Panel -->
+    <div class="panel panel-satellites">
+        <div class="panel-header">
+            <span><i class="fa-solid fa-network-wired"></i> ACTIVE NODES</span>
+            <span style="font-size:0.7rem; color:#00f5d4">[RUNNING]</span>
+        </div>
+        <div class="card-node active" onclick="playBeep()">
+            <h4>NODE ALPHA // MAIN <span style="color:var(--neon-cyan)">LEO</span></h4>
+            <p>PACKET RATE: 104 MB/S | LATENCY: 2ms</p>
+        </div>
+        <div class="card-node" onclick="playBeep()">
+            <h4>NODE BETA // QUANTUM <span style="color:var(--neon-purple)">DEEP</span></h4>
+            <p>SYNC RATE: 99.8% | STATUS: OPTIMAL</p>
+        </div>
+    </div>
+
+    <!-- Launch Action Button -->
+    <div class="center-action">
+        <button class="btn-launch" onclick="triggerOverdrive()">
+            <i class="fa-solid fa-rocket"></i>
+            <span>ACTIVATE OVERDRIVE CORE</span>
+        </button>
+    </div>
+
+    <!-- Cyber Terminal Drawer -->
+    <div class="terminal-drawer" id="termDrawer">
+        <div class="term-header">
+            <span><i class="fa-solid fa-terminal"></i> AMIR CYBER TERMINAL // COMMAND LINE INTERFACE</span>
+            <span style="cursor:pointer; color:var(--neon-red)" onclick="toggleTerminal()">✕</span>
+        </div>
+        <div class="term-body" id="termOutput">
+            <div>[SYSTEM INITIALIZATION SUCCESSFUL]</div>
+            <div>TYPE <span style="color:var(--neon-cyan)">'help'</span> TO DISPLAY AVAILABLE COMMANDS.</div>
+            <br>
+        </div>
+        <div class="term-input-line">
+            <span style="color:var(--neon-cyan)">amir@cyber-core:~$</span>
+            <input type="text" id="termInput" placeholder="دستور مورد نظر را وارد کنید..." autocomplete="off">
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         JAVASCRIPT CORE LOGIC & THREE.JS 3D ENGINE
+         ========================================================================== -->
+    <script>
+        // 1. Web Audio Synthesizer
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSciFiSound(freq, type = 'sine', duration = 0.1) {
+            if (!soundEnabled) return;
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function playBeep() { playSciFiSound(1200, 'square', 0.08); }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('audioIcon').className = soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+            if (soundEnabled) playSciFiSound(800, 'sine', 0.2);
+        }
+
+        // 2. Mouse Spotlight Tracking
+        document.addEventListener('mousemove', (e) => {
+            const spotlight = document.getElementById('spotlight');
+            spotlight.style.left = e.clientX + 'px';
+            spotlight.style.top = e.clientY + 'px';
+        });
+
+        // 3. Three.js 3D Mesh Particle Network Engine
+        const canvas = document.getElementById('cyber-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 40;
+
+        // Neural Node Points & Network Construction
+        const count = 150;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(count * 3);
+
+        for (let i = 0; i < count * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 80;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 1.2,
+            color: 0x00f2fe,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const pointsMesh = new THREE.Points(geometry, material);
+        scene.add(pointsMesh);
+
+        // Core Glowing Wireframe Sphere
+        const sphereGeo = new THREE.IcosahedronGeometry(12, 2);
+        const sphereMat = new THREE.MeshBasicMaterial({
+            color: 0x7f00ff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.35
+        });
+        const coreSphere = new THREE.Mesh(sphereGeo, sphereMat);
+        scene.add(coreSphere);
+
+        let speedMultiplier = 1;
+
+        function triggerOverdrive() {
+            speedMultiplier = 12;
+            playSciFiSound(300, 'sawtooth', 0.6);
+            setTimeout(() => { speedMultiplier = 1; }, 2000);
+        }
+
+        let clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            let time = clock.getElapsedTime();
+
+            pointsMesh.rotation.y = time * 0.05 * speedMultiplier;
+            pointsMesh.rotation.x = time * 0.02 * speedMultiplier;
+
+            coreSphere.rotation.y = -time * 0.1 * speedMultiplier;
+            coreSphere.rotation.z = time * 0.05 * speedMultiplier;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // 4. Terminal Interactive System
+        function toggleTerminal() {
+            const term = document.getElementById('termDrawer');
+            term.classList.toggle('open');
+            if (term.classList.contains('open')) {
+                document.getElementById('termInput').focus();
+                playSciFiSound(1000, 'triangle', 0.15);
+            }
+        }
+
+        const termInput = document.getElementById('termInput');
+        const termOutput = document.getElementById('termOutput');
+
+        termInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = termInput.value.trim().toLowerCase();
+                termInput.value = '';
+
+                const line = document.createElement('div');
+                line.innerHTML = `<span style="color:var(--neon-cyan)">amir@cyber-core:~$</span> ${cmd}`;
+                termOutput.appendChild(line);
+
+                const res = document.createElement('div');
+                res.style.marginBottom = '10px';
+
+                switch (cmd) {
+                    case 'help':
+                        res.innerHTML = `دستورات مجاز:<br>
+                        - <span style="color:var(--neon-cyan)">status</span>: وضعیت سلامت سیستم<br>
+                        - <span style="color:var(--neon-cyan)">overdrive</span>: فعال‌سازی حالت شتاب تند<br>
+                        - <span style="color:var(--neon-cyan)">clear</span>: پاک‌سازی ترمینال`;
+                        break;
+                    case 'status':
+                        res.innerHTML = `[STATUS]: ALL SYSTEMS NOMINAL. NO PENETRATION DETECTED.`;
+                        break;
+                    case 'overdrive':
+                        triggerOverdrive();
+                        res.innerHTML = `<span style="color:var(--neon-amber)">[OVERDRIVE ACTIVATED] MULTIPLIER x12</span>`;
+                        break;
+                    case 'clear':
+                        termOutput.innerHTML = '';
+                        return;
+                    default:
+                        res.innerHTML = `<span style="color:var(--neon-red)">دستور ناشناخته: '${cmd}'. برای راهنمایی 'help' را تایپ کنید.</span>`;
+                }
+
+                termOutput.appendChild(res);
+                termOutput.scrollTop = termOutput.scrollHeight;
+                playSciFiSound(1400, 'sine', 0.05);
+            }
+        });
+    </script>
+</body>
+</html>
