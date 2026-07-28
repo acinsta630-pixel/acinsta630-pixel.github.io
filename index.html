@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAYRO // Store Layout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0b0e;
+            --panel-bg: rgba(255, 255, 255, 0.02);
+            --border-color: rgba(255, 255, 255, 0.07);
+            --text-main: #f3f3f5;
+            --text-muted: #8b8b96;
+            --gemini-gradient: linear-gradient(135deg, #7928ca 0%, #4383ec 50%, #10b981 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            /* بک‌گراند عمیق و متحرک سبک SaaS Ultra-Modern */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(121, 40, 202, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(67, 131, 236, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(15, 15, 20, 0.5) 0px, transparent 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Top Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(18, 18, 24, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px 24px;
+            backdrop-filter: blur(25px);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-icon {
+            width: 22px;
+            height: 22px;
+            background: var(--gemini-gradient);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-links li {
+            transition: color 0.2s;
+        }
+
+        .nav-links li:hover {
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-white {
+            background: #ffffff;
+            color: #08080a;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .btn-white:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 25px rgba(255, 255, 255, 0.25);
+        }
+
+        /* Hero Extension Section */
+        .hero-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 40px 10px 30px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ext-info {
+            display: flex;
+            gap: 24px;
+        }
+
+        /* آیکون ترکیبی Amir AI + Gemini */
+        .ext-icon-gemini {
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(145deg, #161622, #0d0d14);
+            border: 1px solid rgba(121, 40, 202, 0.4);
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(121, 40, 202, 0.25);
+        }
+
+        .ext-icon-gemini i {
+            font-size: 2.5rem;
+            background: var(--gemini-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ext-details h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge-ai {
+            font-size: 0.75rem;
+            background: rgba(67, 131, 236, 0.15);
+            color: #4383ec;
+            border: 1px solid rgba(67, 131, 236, 0.3);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .ext-details p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .ext-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .avatar-amir {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--gemini-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Tabs Pill Navigation */
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            width: fit-content;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Main Content Grid */
+        .grid-section {
+            display: grid;
+            grid-template-columns: 1fr 250px;
+            gap: 30px;
+        }
+
+        .preview-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .preview-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            height: 190px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            transition: border-color 0.2s;
+        }
+
+        .preview-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .contributors-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contributors-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contributor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.85rem;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <div class="nav-right">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-sparkles"></i></div>
+                Rayro
+            </div>
+            <ul class="nav-links">
+                <li>Store</li>
+                <li>Pro</li>
+                <li>AI Core</li>
+                <li>iOS</li>
+                <li>Windows</li>
+                <li>Pricing</li>
+            </ul>
+        </div>
+        <div class="nav-left">
+            <span style="font-size: 0.85rem; color: var(--text-muted); cursor: pointer;">Log in</span>
+            <button class="btn-white">
+                <i class="fa-brands fa-apple"></i> Download
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section: Amir AI + Gemini -->
+    <div class="hero-section">
+        <div class="ext-info">
+            <div class="ext-icon-gemini">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <div class="ext-details">
+                <h1>Amir AI <span class="badge-ai">Gemini Core</span></h1>
+                <p>دستیار هوشمند و نسل جدید Amir AI قدرت‌گرفته از موتور هوش مصنوعی Gemini. پاسخ‌دهی سریع، تحلیل داده و کدنویسی پیشرفته در محیط Rayro.</p>
+                <div class="ext-meta">
+                    <div class="author">
+                        <div class="avatar-amir">A</div>
+                        Amir & Gemini
+                    </div>
+                    <span>•</span>
+                    <span><i class="fa-solid fa-download"></i> 128,500 Installs</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-white" style="padding: 10px 22px; font-size: 0.9rem;">
+            Install Extension
+        </button>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-container">
+        <button class="tab-btn active">Overview</button>
+        <button class="tab-btn">Commands</button>
+        <button class="tab-btn">Version History</button>
+    </div>
+
+    <!-- Main Grid Content -->
+    <div class="grid-section">
+        <div class="preview-cards">
+            <div class="preview-card">[ اسکرین‌شات ۱: چت هوشمند ]</div>
+            <div class="preview-card">[ اسکرین‌شات ۲: کدنویسی ]</div>
+            <div class="preview-card">[ اسکرین‌شات ۳: تنظیمات ]</div>
+        </div>
+
+        <div class="contributors-box">
+            <div class="contributors-title">
+                <span>توسعه‌دهندگان</span>
+                <span style="background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 10px; font-size: 0.75rem;">2</span>
+            </div>
+            <div class="contributor-list">
+                <div class="contributor-item">
+                    <div class="avatar-amir">A</div>
+                    <span>Amir</span>
+                </div>
+                <div class="contributor-item">
+                    <div class="avatar-amir" style="background: linear-gradient(135deg, #4383ec, #10b981);">G</div>
+                    <span>Gemini AI</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
