@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMIR // OMNI-TITAN CORE OS v5.0 [SINGULARITY EDITION]</title>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Three.js Library for True 3D Graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           AMIR OMNI-TITAN CORE OS v5.0 - ULTRA CYBERNETIC ARCHITECTURE (2026)
+           ========================================================================== */
+        
+        :root {
+            --bg-void: #010206;
+            --bg-glass: rgba(8, 12, 24, 0.7);
+            --border-glow: rgba(0, 242, 254, 0.25);
+            --border-glow-heavy: rgba(0, 242, 254, 0.8);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --neon-cyan: #00f2fe;
+            --neon-blue: #4facfe;
+            --neon-purple: #9d4edd;
+            --neon-pink: #f72585;
+            --neon-amber: #ffb703;
+            --neon-green: #00f5d4;
+            --font-code: 'Fira Code', monospace;
+            --font-ui: 'Vazirmatn', system-ui, sans-serif;
+        }
+
+        .light-theme {
+            --bg-void: #eef2f7;
+            --bg-glass: rgba(255, 255, 255, 0.8);
+            --border-glow: rgba(0, 119, 182, 0.25);
+            --border-glow-heavy: rgba(0, 119, 182, 0.8);
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --neon-cyan: #0284c7;
+            --neon-blue: #2563eb;
+            --neon-purple: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            direction: rtl;
+        }
+
+        /* --- 1. WebGL Background & FX Layer --- */
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -5;
+            pointer-events: none;
+        }
+
+        /* Holographic CRT Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+            background-size: 100% 3px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Ambient Dynamic Light Sphere */
+        .cursor-light {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, rgba(157, 78, 221, 0.08) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: -4;
+            transition: left 0.05s ease-out, top 0.05s ease-out;
+            filter: blur(40px);
+        }
+
+        /* --- 2. Cyberpunk HUD Top/Bottom Overlay --- */
+        .cyber-hud {
+            position: fixed;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            color: var(--neon-cyan);
+            pointer-events: none;
+            z-index: 1000;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hud-top-left { top: 15px; left: 20px; }
+        .hud-top-right { top: 15px; right: 20px; text-align: left; }
+        .hud-bottom-left { bottom: 15px; left: 20px; }
+        .hud-bottom-right { bottom: 15px; right: 20px; text-align: left; }
+
+        .hud-status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-green);
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink { from { opacity: 0.2; } to { opacity: 1; } }
+
+        /* --- 3. Ultra Floating Capsule Navigation --- */
+        .floating-nav {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1100px;
+            padding: 12px 30px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-glow);
+            border-radius: 100px;
+            z-index: 2000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .floating-nav:hover {
+            border-color: var(--border-glow-heavy);
+            box-shadow: 0 15px 50px rgba(0, 242, 254, 0.25);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-code);
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: var(--text-main);
+        }
+
+        .logo-core {
+            width: 14px;
+            height: 14px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            border-radius: 3px;
+            transform: rotate(45deg);
+            box-shadow: 0 0 15px var(--neon-cyan);
+            animation: pulse-spin 4s linear infinite;
+        }
+
+        @keyframes pulse-spin {
+            0% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(225deg) scale(1.2); }
+            100% { transform: rotate(405deg) scale(1); }
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--neon-cyan);
+            transition: 0.3s ease;
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--text-main);
+            text-shadow: 0 0 12px var(--neon-cyan);
+        }
+
+        .nav-menu a:hover::after, .nav-menu a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .cyber-btn-icon {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .cyber-btn-icon:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan);
+            transform: scale(1.1);
+        }
+
+        /* --- 4. Hero Singularity Core --- */
+        .hero-section {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 150px 30px 80px;
+            gap: 50px;
+            position: relative;
+        }
+
+        .badge-cyber {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            background: rgba(0, 242, 254, 0.06);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            color: var(--neon-cyan);
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
+        .hero-title {
+            font-size: 4.2rem;
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        .hero-title span.glow-text {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+        }
+
+        .type-writer {
+            font-family: var(--font-code);
+            color: var(--neon-pink);
+            border-left: 3px solid var(--neon-pink);
+            padding-left: 8px;
+            animation: caret 0.8s infinite;
+        }
+
+        @keyframes caret { 50% { border-color: transparent; } }
+
+        .hero-subtitle {
+            color: var(--text-dim);
+            font-size: 1.25rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .btn-cyber-primary {
+            position: relative;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            color: #030712;
+            padding: 18px 38px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .btn-cyber-primary:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.8);
+            background: linear-gradient(135deg, #ffffff, var(--neon-cyan));
+        }
+
+        .btn-cyber-terminal {
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--text-main);
+            padding: 18px 34px;
+            border-radius: 14px;
+            font-weight: 700;
+            border: 1px solid var(--border-glow);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-code);
+        }
+
+        .btn-cyber-terminal:hover {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            box-shadow: 0 0 30px rgba(247, 37, 133, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* 3D Kinetic HUD Sphere Visualizer */
+        .visualizer-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- 5. Interactive Cyber Terminal Drawer --- */
+        .terminal-overlay {
+            position: fixed;
+            bottom: -500px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 900px;
+            height: 400px;
+            background: rgba(3, 7, 18, 0.95);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 20px 20px 0 0;
+            z-index: 3000;
+            box-shadow: 0 -10px 50px rgba(0, 242, 254, 0.3);
+            transition: bottom 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+        }
+
+        .terminal-overlay.open {
+            bottom: 0;
+        }
+
+        .terminal-header {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-glow);
+            border-radius: 20px 20px 0 0;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--neon-cyan);
+        }
+
+        .terminal-close {
+            cursor: pointer;
+            color: var(--neon-pink);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: var(--neon-green);
+            line-height: 1.6;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .terminal-input-line input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        /* --- 6. Titan Grid Cards (Ultra 3D Tilt) --- */
+        .section-titan {
+            max-width: 1350px;
+            margin: 100px auto;
+            padding: 0 30px;
+        }
+
+        .section-header-cyber {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .section-header-cyber h2 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            font-family: var(--font-code);
+            letter-spacing: 2px;
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .section-header-cyber h2::before {
+            content: '//';
+            color: var(--neon-cyan);
+            margin-left: 10px;
+        }
+
+        .grid-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border-glow-heavy), transparent);
+        }
+
+        .card-titan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 35px;
+        }
+
+        .card-titan {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glow);
+            border-radius: 28px;
+            padding: 38px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out, border-color 0.4s, box-shadow 0.4s;
+            cursor: pointer;
+        }
+
+        .card-titan::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+            transition: 0.6s;
+        }
+
+        .card-titan:hover::before {
+            left: 100%;
+        }
+
+        .card-titan:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 20px 60px rgba(0, 242, 254, 0.25), inset 0 0 20px rgba(0, 242, 254, 0.1);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: var(--font-code);
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            color: var(--neon-cyan);
+        }
+
+        .card-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+        }
+
+        .card-titan h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: var(--text-main);
+        }
+
+        .card-titan p {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .card-tech-stack {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .tech-tag {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            padding: 5px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            color: var(--text-dim);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-link-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--neon-cyan);
+            font-family: var(--font-code);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .card-link-action:hover {
+            gap: 16px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        /* --- 7. Live Stats Grid --- */
+        .stats-banner {
+            max-width: 1350px;
+            margin: 80px auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .stat-box {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glow);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-number {
+            font-family: var(--font-code);
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        /* --- 8. Cyber Footer --- */
+        footer {
+            border-top: 1px solid var(--border-glow);
+            padding: 50px 30px;
+            text-align: center;
+            background: rgba(2, 4, 10, 0.9);
+            font-family: var(--font-code);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        footer p span {
+            color: var(--neon-cyan);
+            font-weight: bold;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 160px;
+            }
+            .hero-subtitle { margin: 0 auto 35px; }
+            .cta-group { justify-content: center; }
+            .visualizer-container { height: 320px; }
+            .hero-title { font-size: 3.2rem; }
+            .nav-menu { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. WebGL & FX Canvas -->
+    <canvas id="webgl-canvas"></canvas>
+    <div class="scanlines"></div>
+    <div class="cursor-light" id="cursorLight"></div>
+
+    <!-- 2. Cyber HUD Overlays -->
+    <div class="cyber-hud hud-top-left">
+        <span class="hud-status-dot"></span> SYSTEM: ONLINE // SINGULARITY CORE v5.0
+    </div>
+    <div class="hud-top-right cyber-hud">
+        LATENCY: <span id="pingValue" style="color:var(--neon-green)">12ms</span> | FPS: <span id="fpsValue" style="color:var(--neon-cyan)">60</span>
+    </div>
+    <div class="hud-bottom-left cyber-hud">
+        LOC: [35.6892° N, 51.3890° E]
+    </div>
+    <div class="hud-bottom-right cyber-hud">
+        CURSOR_XYZ: [<span id="mouseX">0</span>, <span id="mouseY">0</span>, 0.0]
+    </div>
+
+    <!-- 3. Floating Capsule Navigation -->
+    <header class="floating-nav">
+        <div class="nav-logo">
+            <div class="logo-core"></div>
+            <span>AMIR.AI // OS</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#hero" class="active" data-en="CORE">هسته اصلی</a></li>
+            <li><a href="#projects" data-en="TITAN MATRIX">پروژه‌های تیتان</a></li>
+            <li><a href="#stats" data-en="TELEMETRY">تلمتری و آمار</a></li>
+            <li><a href="#" onclick="toggleTerminal(); return false;" data-en="TERMINAL">ترمینال سایبری</a></li>
+        </ul>
+        <div class="nav-controls">
+            <button class="cyber-btn-icon" onclick="toggleAudioSynth()" title="موتور صوتی سایبر"><i class="fa-solid fa-volume-high" id="soundIcon"></i></button>
+            <button class="cyber-btn-icon" id="langToggle" title="تغییر زبان">🌐</button>
+            <button class="cyber-btn-icon" id="themeToggle" title="تغییر تم">🌙</button>
+        </div>
+    </header>
+
+    <!-- 4. Hero Singularity Core -->
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <div class="badge-cyber">
+                <i class="fa-solid fa-atom fa-spin"></i>
+                <span data-en="QUANTUM ARCHITECTURE ACTIVE">معماری کوانتومی نسخه ۵.۰ فعال است</span>
+            </div>
+
+            <h1 class="hero-title">
+                من <span class="glow-text">امیر</span> هستم<br>
+                <span class="type-writer" id="typeWriter"></span>
+            </h1>
+
+            <p class="hero-subtitle" data-en="Architecting ultra-dimensional web systems, next-gen AI interfaces, and autonomous matrix engines. Beyond conventional boundaries.">
+                طراح و معمار سامانه‌های دیجیتال چندبعدی، رابط‌های هوش مصنوعی نسل بعدی و موتورهای هوشمند خودکار. فراتر از مرزهای مدرنیته.
+            </p>
+
+            <div class="cta-group">
+                <a href="#projects" class="btn-cyber-primary" data-en="LAUNCH TITAN MATRIX ⚡">
+                    <span>ورود به ماتریس تیتان</span>
+                    <i class="fa-solid fa-bolt"></i>
+                </a>
+                <button class="btn-cyber-terminal" onclick="toggleTerminal()" data-en="OPEN TERMINAL >_">
+                    <span>ترمینال >_</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3D Kinetic Visualizer Container -->
+        <div class="visualizer-container" id="visualizer3D"></div>
+    </section>
+
+    <!-- 5. Live Telemetry & Stats -->
+    <section class="stats-banner" id="stats">
+        <div class="stat-box">
+            <div class="stat-number" id="stat1">99.9%</div>
+            <div class="stat-label" data-en="Core Quantum Efficiency">کارایی هسته کوانتومی</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" id="stat2">120+</div>
+            <div class="stat-label" data-en="Autonomous Algorithms">الگوریتم‌های پردازشی</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" id="stat3">0.001s</div>
+            <div class="stat-label" data-en="Response Latency">تاخیر پاسخگویی سیستم</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" id="stat4">∞</div>
+            <div class="stat-label" data-en="Innovation Capacity">ظرفیت نوآوری و توسعه</div>
+        </div>
+    </section>
+
+    <!-- 6. Titan Grid Cards -->
+    <section class="section-titan" id="projects">
+        <div class="section-header-cyber">
+            <h2 data-en="TITAN MATRIX PROJECTS">پروژه‌های شاهکار تیتان</h2>
+            <div class="grid-line"></div>
+        </div>
+
+        <div class="card-titan-grid">
+            <!-- Card 1 -->
+            <div class="card-titan" onclick="playCyberSound(900, 'square', 0.1)">
+                <div class="card-badge">CORE OS v5</div>
+                <div class="card-icon-wrapper">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <h3 data-en="Omni-Titan Operating System">سیستم‌عامل هولوگرافیک</h3>
+                <p data-en="Ultra-dimensional portfolio interface with WebGL 3D particle physics, Web Audio synthesizer, and live cyber telemetry.">رابط کاربری چندبعدی همراه با فیزیک ذرات ۳ بعدی WebGL، سینتی‌سایزر صوتی اختصاصی و تلمتری زنده سایبری.</p>
+                <div class="card-tech-stack">
+                    <span class="tech-tag">WebGL</span>
+                    <span class="tech-tag">Three.js</span>
+                    <span class="tech-tag">WebAudio API</span>
+                </div>
+                <a href="#" class="card-link-action" data-en="EXECUTE PROTOCOL ➔">اجرای پروتکل ➔</a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card-titan" onclick="playCyberSound(1100, 'sawtooth', 0.1)">
+                <div class="card-badge">AI CORE</div>
+                <div class="card-icon-wrapper" style="color:var(--neon-purple); border-color:var(--neon-purple); background:rgba(157,78,221,0.1)">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h3 data-en="Amir Neural Matrix AI">ماتریس هوش مصنوعی امیر</h3>
+                <p data-en="Autonomous conversational engine with memory retention, custom prompt parsing, and futuristic hologram visualizer.">موتور گفتگوگر خودکار با قابلیت حفظ حافظه، تحلیل پیشرفته کدهای ورودی و نمایشگر هولوگرافیک.</p>
+                <div class="card-tech-stack">
+                    <span class="tech-tag">Neural API</span>
+                    <span class="tech-tag">Python Core</span>
+                    <span class="tech-tag">Transformers</span>
+                </div>
+                <a href="#" class="card-link-action" style="color:var(--neon-purple)" data-en="CONNECT NEURAL ➔">اتصال شبکه عصبی ➔</a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card-titan" onclick="playCyberSound(1300, 'sine', 0.1)">
+                <div class="card-badge">ATMOSPHERE</div>
+                <div class="card-icon-wrapper" style="color:var(--neon-amber); border-color:var(--neon-amber); background:rgba(255,183,3,0.1)">
+                    <i class="fa-solid fa-cloud-bolt"></i>
+                </div>
+                <h3 data-en="Atmosphere Climate Engine">موتور اقلیم و داده‌های جوی</h3>
+                <p data-en="Global real-time weather analytics engine with predictive forecast visualizers and ambient soundscapes.">سامانه تحلیل و ردیابی لحظه‌ای داده‌های آب‌وهوایی جهان به همراه پیش‌بینی هوشمند و جلوه‌های دیداری صوتی.</p>
+                <div class="card-tech-stack">
+                    <span class="tech-tag">REST API</span>
+                    <span class="tech-tag">Data Visualizer</span>
+                    <span class="tech-tag">Async JS</span>
+                </div>
+                <a href="#" class="card-link-action" style="color:var(--neon-amber)" data-en="INITIALIZE ENGINE ➔">راه‌اندازی سامانه ➔</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Interactive Cyber Terminal -->
+    <div class="terminal-overlay" id="terminalOverlay">
+        <div class="terminal-header">
+            <span><i class="fa-solid fa-terminal"></i> AMIR TITAN TERMINAL // SHELL v5.0</span>
+            <span class="terminal-close" onclick="toggleTerminal()">✕</span>
+        </div>
+        <div class="terminal-body" id="terminalOutput">
+            <div>[SYSTEM INITIALIZATION COMPLETE]</div>
+            <div>Welcome to Amir Titan Shell. Type <span style="color:var(--neon-cyan)">'help'</span> for available commands.</div>
+            <br>
+        </div>
+        <div class="terminal-input-line">
+            <span style="color:var(--neon-cyan)">amir@titan-core:~$</span>
+            <input type="text" id="terminalInput" placeholder="دستور خود را وارد کنید..." autocomplete="off">
+        </div>
+    </div>
+
+    <!-- 8. Footer -->
+    <footer>
+        <p data-en="DESIGNED & ARCHITECTED BY AMIR // OMNI-TITAN OS © 2026">
+            طراحی و پیاده‌سازی شده توسط <span>امیر</span> // تمام حقوق تحت کنترل سیستم‌عامل تیتان © 2026
+        </p>
+    </footer>
+
+    <!-- ==========================================================================
+         ULTRA HIGH-TECH JAVASCRIPT LOGIC
+         ========================================================================== -->
+    <script>
+        // --- 1. Web Audio API Synthesizer (Zero External Audio Files) ---
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playCyberSound(freq, type = 'sine', duration = 0.08) {
+            if (!soundEnabled) return;
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function toggleAudioSynth() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            if (soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high';
+                playCyberSound(1000, 'sine', 0.1);
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark';
+            }
+        }
+
+        // Add Sound Effects to interactive elements
+        document.querySelectorAll('a, button, .card-titan').forEach(el => {
+            el.addEventListener('mouseenter', () => playCyberSound(850, 'triangle', 0.04));
+        });
+
+        // --- 2. WebGL Three.js Particle Matrix & 3D Visualizer Core ---
+        const canvas = document.getElementById('webgl-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+
+        // Create Quantum Particle Matrix Background
+        const particleCount = 1200;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+
+        const color1 = new THREE.Color('#00f2fe');
+        const color2 = new THREE.Color('#9d4edd');
+
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 120;
+            positions[i + 1] = (Math.random() - 0.5) * 120;
+            positions[i + 2] = (Math.random() - 0.5) * 120;
+
+            const mixedColor = color1.clone().lerp(color2, Math.random());
+            colors[i] = mixedColor.r;
+            colors[i + 1] = mixedColor.g;
+            colors[i + 2] = mixedColor.b;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.8,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particleSystem = new THREE.Points(geometry, material);
+        scene.add(particleSystem);
+
+        // 3D Visualizer Orb Sphere for Hero Section
+        const visContainer = document.getElementById('visualizer3D');
+        const visRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        visRenderer.setSize(350, 350);
+        visContainer.appendChild(visRenderer.domElement);
+
+        const visScene = new THREE.Scene();
+        const visCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+        visCamera.position.z = 5;
+
+        // Icosahedron Wireframe Sphere
+        const orbGeo = new THREE.IcosahedronGeometry(1.8, 2);
+        const orbMat = new THREE.MeshBasicMaterial({
+            color: 0x00f2fe,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.6
+        });
+        const orbMesh = new THREE.Mesh(orbGeo, orbMat);
+        visScene.add(orbMesh);
+
+        // Inner glowing core
+        const innerGeo = new THREE.SphereGeometry(1.0, 32, 32);
+        const innerMat = new THREE.MeshBasicMaterial({
+            color: 0x9d4edd,
+            wireframe: false,
+            transparent: true,
+            opacity: 0.8
+        });
+        const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+        visScene.add(innerMesh);
+
+        // Render Loop
+        let clock = new THREE.Clock();
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+
+            document.getElementById('mouseX').textContent = e.clientX;
+            document.getElementById('mouseY').textContent = e.clientY;
+
+            const cursorLight = document.getElementById('cursorLight');
+            cursorLight.style.left = e.clientX + 'px';
+            cursorLight.style.top = e.clientY + 'px';
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            let elapsedTime = clock.getElapsedTime();
+
+            // Rotate particle system slowly
+            particleSystem.rotation.y = elapsedTime * 0.03;
+            particleSystem.rotation.x = mouseY * 0.1;
+
+            // Rotate 3D Visualizer Orb
+            orbMesh.rotation.x = elapsedTime * 0.4;
+            orbMesh.rotation.y = elapsedTime * 0.6;
+            innerMesh.rotation.y = -elapsedTime * 0.8;
+
+            // Pulse Inner Sphere
+            let scale = 1 + Math.sin(elapsedTime * 3) * 0.1;
+            innerMesh.scale.set(scale, scale, scale);
+
+            renderer.render(scene, camera);
+            visRenderer.render(visScene, visCamera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- 3. Dynamic Cyber Typist Engine ---
+        const typeWriter = document.getElementById('typeWriter');
+        const phrases = ["AI ARCHITECT", "FULL-STACK MASTER", "SINGULARITY VISIONARY", "CORE DEVELOPER"];
+        let phraseIdx = 0, charIdx = 0, isDeleting = false;
+
+        function typeLoop() {
+            const currentPhrase = phrases[phraseIdx];
+            if (isDeleting) {
+                typeWriter.textContent = currentPhrase.substring(0, charIdx--);
+            } else {
+                typeWriter.textContent = currentPhrase.substring(0, charIdx++);
+            }
+
+            let speed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIdx === currentPhrase.length + 1) {
+                speed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                phraseIdx = (phraseIdx + 1) % phrases.length;
+                speed = 500;
+            }
+
+            setTimeout(typeLoop, speed);
+        }
+        typeLoop();
+
+        // --- 4. 3D Tilt Card Physics Engine ---
+        document.querySelectorAll('.card-titan').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                card.style.transform = `perspective(1000px) rotateX(${-y / 8}deg) rotateY(${x / 8}deg) translateY(-8px) scale(1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)`;
+            });
+        });
+
+        // --- 5. Interactive Cyber Terminal Shell Logic ---
+        function toggleTerminal() {
+            const term = document.getElementById('terminalOverlay');
+            term.classList.toggle('open');
+            if (term.classList.contains('open')) {
+                document.getElementById('terminalInput').focus();
+                playCyberSound(1200, 'square', 0.15);
+            }
+        }
+
+        const terminalInput = document.getElementById('terminalInput');
+        const terminalOutput = document.getElementById('terminalOutput');
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value.trim().toLowerCase();
+                terminalInput.value = '';
+
+                const line = document.createElement('div');
+                line.innerHTML = `<span style="color:var(--neon-cyan)">amir@titan-core:~$</span> ${cmd}`;
+                terminalOutput.appendChild(line);
+
+                const response = document.createElement('div');
+                response.style.marginBottom = '10px';
+
+                switch (cmd) {
+                    case 'help':
+                        response.innerHTML = `Available Commands:<br>
+                        - <span style="color:var(--neon-cyan)">about</span>: Show developer specs<br>
+                        - <span style="color:var(--neon-cyan)">skills</span>: List tech stack<br>
+                        - <span style="color:var(--neon-cyan)">projects</span>: Show core projects<br>
+                        - <span style="color:var(--neon-cyan)">clear</span>: Clear terminal<br>
+                        - <span style="color:var(--neon-cyan)">ping</span>: Test system response`;
+                        break;
+                    case 'about':
+                        response.innerHTML = `AMIR // Lead AI Architect & Full-Stack Systems Engineer.<br>Specialized in quantum-grade web interfaces and autonomous AI pipelines.`;
+                        break;
+                    case 'skills':
+                        response.innerHTML = `Tech Matrix: Three.js, WebGL, Python, Neural APIs, Async JS, TailWind, Web Audio Synthesis, Cyber Security.`;
+                        break;
+                    case 'projects':
+                        response.innerHTML = `1. Titan OS v5.0 (Holographic Web OS)<br>2. Amir Neural AI (Autonomous Conversational Core)<br>3. Atmosphere Engine (Global Climate Analytics)`;
+                        break;
+                    case 'ping':
+                        response.innerHTML = `PONG! Response time: <span style="color:var(--neon-green)">0.001ms</span>`;
+                        break;
+                    case 'clear':
+                        terminalOutput.innerHTML = '';
+                        return;
+                    default:
+                        response.innerHTML = `<span style="color:var(--neon-pink)">Command not recognized: '${cmd}'. Type 'help' for available options.</span>`;
+                }
+
+                terminalOutput.appendChild(response);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                playCyberSound(1400, 'sine', 0.05);
+            }
+        });
+
+        // --- 6. Language & Theme Toggle ---
+        const langBtn = document.getElementById('langToggle');
+        let isEn = false;
+
+        langBtn.addEventListener('click', () => {
+            isEn = !isEn;
+            document.querySelectorAll('[data-en]').forEach(el => {
+                if (!el.dataset.fa) el.dataset.fa = el.innerHTML;
+                el.innerHTML = isEn ? el.dataset.en : el.dataset.fa;
+            });
+            document.documentElement.dir = isEn ? 'ltr' : 'rtl';
+            langBtn.textContent = isEn ? '🇮🇷' : '🌐';
+            playCyberSound(1000, 'triangle', 0.1);
+        });
+
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            themeBtn.textContent = document.body.classList.contains('light-theme') ? '☀️' : '🌙';
+            playCyberSound(700, 'sine', 0.1);
+        });
+    </script>
+</body>
+</html>
